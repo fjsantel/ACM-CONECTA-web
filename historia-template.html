@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Historia | ACM Conecta</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0a1a1a;
+            --bg-secondary: #0f2424;
+            --bg-card: #132b2b;
+            --accent-primary: #00d4aa;
+            --accent-secondary: #57c5b6;
+            --accent-warm: #e8c547;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(255, 255, 255, 0.1);
+
+            --font-display: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: 0.2s var(--ease-out-expo);
+            --transition-medium: 0.4s var(--ease-out-expo);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            background: rgba(10, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .back-button:hover {
+            color: var(--accent-primary);
+            transform: translateX(-4px);
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        /* Hero Section - Magazine Style */
+        .hero-story {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            margin-top: 80px;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            position: absolute;
+            inset: 0;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 26, 26, 0.95) 0%, rgba(10, 26, 26, 0.3) 50%, rgba(10, 26, 26, 0.7) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 4rem;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Article Content - Magazine Style */
+        .article-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 3rem;
+        }
+
+        .article-intro {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 4rem;
+            font-weight: 500;
+            border-left: 4px solid var(--accent-primary);
+            padding-left: 2rem;
+        }
+
+        /* Interview Section */
+        .interview-section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .qa-block {
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .qa-block:last-child {
+            border-bottom: none;
+        }
+
+        .question {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .answer {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-secondary);
+        }
+
+        /* Quote Section */
+        .quote-section {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-primary);
+            padding: 3rem;
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .quote-icon {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            opacity: 0.1;
+        }
+
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-style: italic;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        /* Photo Gallery - Full Width */
+        .photo-gallery {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            margin-top: 5rem;
+            margin-bottom: 5rem;
+            padding: 4rem 0;
+            background: var(--bg-secondary);
+        }
+
+        .gallery-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform var(--transition-medium);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Navigation Between Stories */
+        .story-navigation {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .nav-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all var(--transition-medium);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+        }
+
+        .nav-card.prev {
+            flex-direction: row;
+        }
+
+        .nav-card.next {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .nav-arrow {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .nav-arrow svg {
+            width: 20px;
+            height: 20px;
+            color: var(--bg-primary);
+        }
+
+        .nav-content {
+            flex: 1;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-name {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            .header-content {
+                padding: 0;
+            }
+
+            .back-button {
+                font-size: 0.85rem;
+            }
+
+            .back-button svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            .logo {
+                font-size: 0.9rem;
+            }
+
+            .hero-story {
+                margin-top: 70px;
+                min-height: 500px;
+            }
+
+            .hero-content {
+                padding: 0 1.5rem 2rem;
+            }
+
+            .hero-label {
+                font-size: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+                margin-bottom: 0.75rem;
+            }
+
+            .hero-subtitle {
+                font-size: clamp(1rem, 4vw, 1.4rem);
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-meta {
+                gap: 1.5rem;
+            }
+
+            .meta-label {
+                font-size: 0.7rem;
+            }
+
+            .meta-value {
+                font-size: 0.9rem;
+            }
+
+            .article-content {
+                padding: 3rem 1.5rem;
+            }
+
+            .article-intro {
+                font-size: 1.1rem;
+                padding-left: 1rem;
+                border-left-width: 3px;
+                margin-bottom: 3rem;
+                line-height: 1.7;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+                margin-bottom: 2rem;
+            }
+
+            .qa-block {
+                margin-bottom: 2rem;
+                padding-bottom: 2rem;
+            }
+
+            .question {
+                font-size: 1rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .answer {
+                font-size: 0.95rem;
+                line-height: 1.8;
+            }
+
+            .quote-section {
+                padding: 1.5rem;
+                margin: 3rem 0;
+            }
+
+            .quote-icon {
+                width: 40px;
+                height: 40px;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .quote-text {
+                font-size: 1.2rem;
+                line-height: 1.4;
+            }
+
+            .photo-gallery {
+                margin-top: 3rem;
+                margin-bottom: 3rem;
+                padding: 3rem 0;
+            }
+
+            .gallery-title {
+                font-size: 1.6rem;
+                margin-bottom: 2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                padding: 0 1.5rem;
+                gap: 1rem;
+            }
+
+            .story-navigation {
+                grid-template-columns: 1fr;
+                padding: 0 1.5rem;
+                margin: 3rem auto;
+                gap: 1rem;
+            }
+
+            .nav-card {
+                padding: 1.5rem;
+            }
+
+            .nav-arrow {
+                width: 36px;
+                height: 36px;
+            }
+
+            .nav-label {
+                font-size: 0.7rem;
+            }
+
+            .nav-name {
+                font-size: 1.1rem;
+            }
+
+            footer {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="index.html#historias" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Volver a Historias
+            </a>
+            <a href="index.html" class="logo">ACM Conecta</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-story">
+        <img id="hero-image" class="hero-image" src="" alt="">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-label" id="hero-label">Historia de Valor</div>
+            <h1 class="hero-title" id="hero-title"></h1>
+            <p class="hero-subtitle" id="hero-subtitle"></p>
+            <div class="hero-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Ubicación</span>
+                    <span class="meta-value" id="meta-location"></span>
+                </div>
+                <div class="meta-item" id="meta-age-container">
+                    <span class="meta-label">Edad</span>
+                    <span class="meta-value" id="meta-age"></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Ocupación</span>
+                    <span class="meta-value" id="meta-occupation"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article-content">
+        <!-- Intro -->
+        <p class="article-intro" id="article-intro"></p>
+
+        <!-- Interview -->
+        <div class="interview-section">
+            <h2 class="section-title">La Entrevista</h2>
+            <div id="interview-container"></div>
+        </div>
+
+        <!-- Quote -->
+        <div class="quote-section">
+            <svg class="quote-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+            </svg>
+            <blockquote class="quote-text" id="quote-text"></blockquote>
+        </div>
+    </article>
+
+    <!-- Photo Gallery -->
+    <section class="photo-gallery">
+        <h2 class="gallery-title">Galería de Imágenes</h2>
+        <div class="gallery-grid" id="gallery-grid"></div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="story-navigation" id="story-navigation"></nav>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Asociación Canal Maule. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Load story data -->
+    <script src="historias-cards-data.js"></script>
+    <script>
+        // Get story slug from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const storySlug = urlParams.get('historia');
+
+        // Find story data
+        const storyData = storiesData.find(s => s.slug === storySlug);
+
+        if (!storyData) {
+            window.location.href = 'index.html#historias';
+        } else {
+            // Populate page
+            document.getElementById('page-title').textContent = `${storyData.name} | ACM Conecta`;
+            document.getElementById('hero-image').src = storyData.image;
+            document.getElementById('hero-image').alt = storyData.name;
+            document.getElementById('hero-title').textContent = storyData.name;
+            document.getElementById('hero-subtitle').textContent = storyData.description;
+            document.getElementById('meta-location').textContent = storyData.location;
+            document.getElementById('meta-occupation').textContent = storyData.occupation;
+
+            // Age (hide if null)
+            if (storyData.age) {
+                document.getElementById('meta-age').textContent = `${storyData.age} años`;
+            } else {
+                document.getElementById('meta-age-container').style.display = 'none';
+            }
+
+            // Story content
+            document.getElementById('article-intro').textContent = storyData.story.intro;
+
+            // Interview
+            const interviewContainer = document.getElementById('interview-container');
+            storyData.story.interview.forEach(qa => {
+                const qaBlock = document.createElement('div');
+                qaBlock.className = 'qa-block';
+                qaBlock.innerHTML = `
+                    <div class="question">${qa.question}</div>
+                    <div class="answer">${qa.answer}</div>
+                `;
+                interviewContainer.appendChild(qaBlock);
+            });
+
+            // Quote
+            document.getElementById('quote-text').textContent = storyData.story.quote;
+
+            // Gallery
+            const galleryGrid = document.getElementById('gallery-grid');
+            storyData.story.additionalImages.forEach(img => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `<img src="${img}" alt="${storyData.name}">`;
+                galleryGrid.appendChild(galleryItem);
+            });
+
+            // Navigation
+            const currentIndex = storiesData.findIndex(s => s.slug === storySlug);
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : storiesData.length - 1;
+            const nextIndex = currentIndex < storiesData.length - 1 ? currentIndex + 1 : 0;
+
+            const navigationContainer = document.getElementById('story-navigation');
+            navigationContainer.innerHTML = `
+                <a href="historia-template.html?historia=${storiesData[prevIndex].slug}" class="nav-card prev">
+                    <div class="nav-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </div>
+                    <div class="nav-content">
+                        <div class="nav-label">Historia Anterior</div>
+                        <div class="nav-name">${storiesData[prevIndex].name}</div>
+                    </div>
+                </a>
+                <a href="historia-template.html?historia=${storiesData[nextIndex].slug}" class="nav-card next">
+                    <div class="nav-content">
+                        <div class="nav-label">Historia Siguiente</div>
+                        <div class="nav-name">${storiesData[nextIndex].name}</div>
+                    </div>
+                    <div class="nav-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </a>
+            `;
+        }
+    </script>
+</body>
+</html>

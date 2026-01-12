@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Hover Brillo</title>
+    <style>
+        body {
+            background: #0a1a1a;
+            padding: 50px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .test-card {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .test-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('fotos/María González.jpg?v=3');
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: brightness(0.9);
+            z-index: 1;
+        }
+
+        .test-card:hover .test-bg {
+            transform: scale(1.05);
+            filter: brightness(1.15);
+        }
+
+        .test-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(45, 80, 22, 0.7) 0%, rgba(127, 176, 105, 0.8) 100%);
+            z-index: 2;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .test-card:hover .test-gradient {
+            opacity: 0.8;
+        }
+
+        .test-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 26, 26, 0.95) 0%, transparent 60%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .test-card:hover .test-overlay {
+            background: linear-gradient(to top, rgba(10, 26, 26, 0.85) 0%, rgba(10, 26, 26, 0.3) 100%);
+        }
+
+        .test-content {
+            pointer-events: auto;
+            color: white;
+        }
+
+        .test-location {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #00d4aa;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-name {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-description {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .test-card:hover .test-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .info {
+            color: #00d4aa;
+            text-align: center;
+            width: 100%;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div style="width: 100%;">
+        <h1>Test de Hover con Brillo</h1>
+        <div style="display: flex; justify-content: center; gap: 20px;">
+            <div class="test-card">
+                <div class="test-bg"></div>
+                <div class="test-gradient"></div>
+                <div class="test-overlay">
+                    <div class="test-content">
+                        <div class="test-location">San Clemente</div>
+                        <h3 class="test-name">María González</h3>
+                        <p class="test-description">Primera presidenta de su comunidad de regantes. Hoy lidera a 50 familias en la gestión eficiente del agua.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="info">🖱️ Pasa el mouse por encima para ver el efecto de brillo</p>
+    </div>
+</body>
+</html>
