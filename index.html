@@ -911,6 +911,15 @@
             pointer-events: none;
         }
 
+        /* Allow clicks through overlay on mobile */
+        @media (max-width: 768px) {
+            .story-overlay,
+            .story-content,
+            .story-card-gradient {
+                pointer-events: none;
+            }
+        }
+
         .story-card:hover .story-overlay {
             background: linear-gradient(to top, rgba(10, 26, 26, 0.85) 0%, rgba(10, 26, 26, 0.1) 100%) !important;
         }
@@ -1424,16 +1433,14 @@
             }
 
             .hero-stats {
-                flex-direction: row;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
                 gap: 1.5rem;
-                flex-wrap: wrap;
                 width: 100%;
             }
 
             .stat {
                 text-align: left;
-                flex: 1;
-                min-width: calc(50% - 0.75rem);
             }
 
             .stat-number {
@@ -1509,14 +1516,6 @@
                 min-height: 400px;
             }
 
-            .story-overlay {
-                pointer-events: none;
-            }
-
-            .story-content {
-                pointer-events: none;
-            }
-
             .webserie-info h3 {
                 font-size: 1.8rem;
                 margin-bottom: 1rem;
@@ -1590,10 +1589,22 @@
 
             .scroll-indicator {
                 left: 1.5rem;
+                bottom: 2rem;
             }
 
             .corner-icon {
                 display: none;
+            }
+
+            /* Fix any overflow issues */
+            .hero-description {
+                max-width: 100%;
+            }
+
+            .hero-cta {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
             }
         }
 
@@ -1627,12 +1638,27 @@
                 font-size: clamp(1rem, 4.5vw, 1.5rem);
             }
 
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
             .stat-number {
                 font-size: 1.75rem;
             }
 
             .section-title {
                 font-size: clamp(1.75rem, 7vw, 2.5rem);
+            }
+
+            .pillar-card,
+            .recurso-card {
+                padding: 1.5rem;
+            }
+
+            .hero-cta {
+                width: 100%;
+                max-width: 100%;
             }
         }
 

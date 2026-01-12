@@ -171,22 +171,45 @@ class StoriesCarousel {
 
     setupSwipe() {
         let startX = 0;
+        let startY = 0;
         let endX = 0;
+        let endY = 0;
+        let isSwiping = false;
         const track = this.container.querySelector('.stories-carousel-track');
+        const cards = this.container.querySelectorAll('.story-card');
 
         track.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isSwiping = false;
         }, { passive: true });
 
         track.addEventListener('touchmove', (e) => {
             endX = e.touches[0].clientX;
-        }, { passive: true });
+            endY = e.touches[0].clientY;
 
-        track.addEventListener('touchend', () => {
+            const diffX = Math.abs(startX - endX);
+            const diffY = Math.abs(startY - endY);
+
+            // If horizontal movement is greater than vertical, it's a swipe
+            if (diffX > diffY && diffX > 10) {
+                isSwiping = true;
+                // Prevent card links from activating during swipe
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        track.addEventListener('touchend', (e) => {
+            if (!isSwiping) {
+                // This is a tap, not a swipe - let the link work
+                return;
+            }
+
             const diff = startX - endX;
             const threshold = 50; // Minimum swipe distance
 
             if (Math.abs(diff) > threshold) {
+                e.preventDefault();
                 if (diff > 0) {
                     // Swipe left - next
                     this.next();
@@ -195,6 +218,8 @@ class StoriesCarousel {
                     this.prev();
                 }
             }
+
+            isSwiping = false;
         });
     }
 
