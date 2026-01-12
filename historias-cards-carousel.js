@@ -36,9 +36,13 @@ class StoriesCarousel {
         this.updateCardsPerView();
         this.startAutoplay();
 
-        // Pausar autoplay al hacer hover
+        // Pausar autoplay al hacer hover o touch
         this.container.addEventListener('mouseenter', () => this.stopAutoplay());
         this.container.addEventListener('mouseleave', () => this.startAutoplay());
+        this.container.addEventListener('touchstart', () => this.stopAutoplay());
+        this.container.addEventListener('touchend', () => {
+            setTimeout(() => this.startAutoplay(), 3000);
+        });
 
         // Actualizar en resize
         window.addEventListener('resize', () => this.updateCardsPerView());
@@ -59,7 +63,11 @@ class StoriesCarousel {
     render() {
         // Generar las cards
         const cardsHTML = this.stories.map((story, index) => `
-            <a href="historia-template.html?historia=${story.slug}" class="story-card ${index === 0 ? 'active' : ''}" data-index="${index}">
+            <a href="historia-template.html?historia=${story.slug}"
+               class="story-card ${index === 0 ? 'active' : ''}"
+               data-index="${index}"
+               role="link"
+               aria-label="Ver historia de ${story.name}">
                 <div class="story-card-bg"
                      style="background-image: url('${story.image}');
                             background-size: cover;
@@ -117,13 +125,35 @@ class StoriesCarousel {
         const prevBtn = this.container.querySelector('.carousel-control.prev');
         const nextBtn = this.container.querySelector('.carousel-control.next');
 
-        prevBtn.addEventListener('click', () => this.prev());
-        nextBtn.addEventListener('click', () => this.next());
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.prev();
+        });
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.next();
+        });
+
+        // Touch events for buttons
+        prevBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.prev();
+        });
+        nextBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.next();
+        });
 
         // Indicadores
         const indicators = this.container.querySelectorAll('.carousel-indicator');
         indicators.forEach(indicator => {
             indicator.addEventListener('click', (e) => {
+                e.preventDefault();
+                const index = parseInt(e.target.dataset.index);
+                this.goToSlide(index);
+            });
+            indicator.addEventListener('touchend', (e) => {
+                e.preventDefault();
                 const index = parseInt(e.target.dataset.index);
                 this.goToSlide(index);
             });
@@ -133,6 +163,38 @@ class StoriesCarousel {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') this.prev();
             if (e.key === 'ArrowRight') this.next();
+        });
+
+        // Swipe support for mobile
+        this.setupSwipe();
+    }
+
+    setupSwipe() {
+        let startX = 0;
+        let endX = 0;
+        const track = this.container.querySelector('.stories-carousel-track');
+
+        track.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        }, { passive: true });
+
+        track.addEventListener('touchmove', (e) => {
+            endX = e.touches[0].clientX;
+        }, { passive: true });
+
+        track.addEventListener('touchend', () => {
+            const diff = startX - endX;
+            const threshold = 50; // Minimum swipe distance
+
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    // Swipe left - next
+                    this.next();
+                } else {
+                    // Swipe right - prev
+                    this.prev();
+                }
+            }
         });
     }
 

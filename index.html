@@ -432,6 +432,8 @@
             text-decoration: none;
             border-radius: 100px;
             transition: all var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .hero-cta:hover {
@@ -448,6 +450,15 @@
 
         .hero-cta:hover svg {
             transform: translateX(4px);
+        }
+
+        /* Mobile button improvements */
+        @media (max-width: 768px) {
+            .hero-cta {
+                padding: 1.125rem 2.25rem;
+                font-size: 1rem;
+                min-height: 48px;
+            }
         }
 
         .hero-stats {
@@ -712,6 +723,9 @@
             justify-content: center;
             cursor: pointer;
             transition: all var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            border: none;
         }
 
         .play-button:hover {
@@ -753,6 +767,8 @@
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
             transition: all var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .episode-item:hover {
@@ -828,11 +844,22 @@
             text-decoration: none;
             display: block;
             flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .story-card.active {
             opacity: 1;
             transform: scale(1);
+            pointer-events: auto;
+        }
+
+        /* Ensure cards are tappable on mobile */
+        @media (max-width: 768px) {
+            .story-card {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .story-card-bg {
@@ -952,6 +979,8 @@
             cursor: pointer;
             transition: all var(--transition-fast);
             z-index: 10;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .carousel-control:hover {
@@ -996,6 +1025,25 @@
             cursor: pointer;
             transition: all var(--transition-fast);
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        /* Increase touch target size on mobile */
+        @media (max-width: 768px) {
+            .carousel-indicator {
+                padding: 0.75rem 0;
+                position: relative;
+            }
+
+            .carousel-indicator::before {
+                content: '';
+                position: absolute;
+                top: -0.5rem;
+                bottom: -0.5rem;
+                left: -0.25rem;
+                right: -0.25rem;
+            }
         }
 
         .carousel-indicator:hover {
@@ -1026,6 +1074,8 @@
             border-radius: 24px;
             padding: 2.5rem;
             transition: all var(--transition-medium);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .recurso-card:hover {
@@ -1074,6 +1124,8 @@
             font-size: 0.9rem;
             text-decoration: none;
             transition: gap var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .recurso-link:hover {
@@ -1191,6 +1243,8 @@
             align-items: center;
             justify-content: center;
             transition: all var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .social-links a:hover {
@@ -1281,6 +1335,16 @@
 
             .carousel-control.next {
                 right: 0;
+            }
+
+            .carousel-control {
+                width: 48px;
+                height: 48px;
+            }
+
+            .carousel-control svg {
+                width: 20px;
+                height: 20px;
             }
 
             header {
@@ -1438,6 +1502,19 @@
             .play-button svg {
                 width: 22px;
                 height: 22px;
+            }
+
+            /* Make sure touch events work on story cards */
+            .story-card {
+                min-height: 400px;
+            }
+
+            .story-overlay {
+                pointer-events: none;
+            }
+
+            .story-content {
+                pointer-events: none;
             }
 
             .webserie-info h3 {
