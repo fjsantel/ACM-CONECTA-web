@@ -1,17 +1,12 @@
 backend:
-  name: github
-  repo: fjsantel/ACM-CONECTA-web
-  branch: main
+  name: test-repo
 
-# Configuración de medios
+# Configuración de medios (rutas relativas - funcionan en cualquier dominio)
 media_folder: "fotos"
-public_folder: "fotos"
+public_folder: "/fotos"
 
-# Workflow editorial para GitHub Pages
-publish_mode: editorial_workflow
-
-# Configuración local para desarrollo (descomenta para usar localmente)
-# local_backend: true
+# Configuración local para desarrollo
+local_backend: true
 
 # Colecciones
 collections:
