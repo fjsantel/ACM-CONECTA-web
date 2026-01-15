@@ -1,12 +1,16 @@
 backend:
-  name: test-repo
+  name: git-gateway
+  branch: main
 
 # Configuración de medios (rutas relativas - funcionan en cualquier dominio)
 media_folder: "fotos"
 public_folder: "/fotos"
 
-# Configuración local para desarrollo
-local_backend: true
+# Workflow editorial
+publish_mode: editorial_workflow
+
+# Para desarrollo local, descomenta la siguiente línea:
+# local_backend: true
 
 # Colecciones
 collections:
