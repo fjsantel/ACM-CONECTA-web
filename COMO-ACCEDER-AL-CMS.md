@@ -1,26 +1,43 @@
 # 🚀 Cómo Acceder al CMS - Guía Rápida
 
-## 📍 URL del CMS
+## ⚠️ PASO PREVIO OBLIGATORIO
 
-Una vez que hagas push a GitHub, tu CMS estará disponible en:
+**Antes de usar el CMS, debes configurar la autenticación OAuth.**
 
-**https://fjsantel.github.io/ACM-CONECTA-web/admin**
+### 👉 Sigue las instrucciones en: [CONFIGURAR-OAUTH-GITHUB.md](CONFIGURAR-OAUTH-GITHUB.md)
+
+**Recomendación**: Usa **Netlify** (Opción 1 del documento) - Es la forma más simple y solo toma 5 minutos.
 
 ---
 
-## 🔐 Primer Acceso
+## 📍 URLs del CMS
 
-### Paso 1: Ir al CMS
-Abre tu navegador y ve a: https://fjsantel.github.io/ACM-CONECTA-web/admin
+### Si usas Netlify (Recomendado):
+```
+https://tu-sitio.netlify.app/admin
+```
 
-### Paso 2: Autorizar con GitHub
-1. Verás un botón **"Login with GitHub"**
-2. Haz clic en ese botón
-3. GitHub te pedirá autorizar la aplicación "Decap CMS"
-4. Haz clic en **"Authorize"** (Autorizar)
+### Si usas GitHub Pages + OAuth manual:
+```
+https://fjsantel.github.io/ACM-CONECTA-web/admin
+```
 
-### Paso 3: ¡Listo!
-Ahora verás el panel de administración con dos colecciones:
+---
+
+## 🔐 Primer Acceso (Después de Configurar OAuth)
+
+### Con Netlify Identity:
+1. Ve a: `https://tu-sitio.netlify.app/admin`
+2. Ingresa tu **email** y **contraseña** (la que creaste en Netlify Identity)
+3. ¡Listo!
+
+### Con GitHub OAuth:
+1. Ve a: `https://fjsantel.github.io/ACM-CONECTA-web/admin`
+2. Haz clic en **"Login with GitHub"**
+3. Autoriza la aplicación
+4. ¡Listo!
+
+Verás el panel con dos colecciones:
 - **Historias - Entrevista** (formato Q&A)
 - **Historias - Reportaje Extenso** (formato revista)
 
@@ -57,8 +74,8 @@ Ahora verás el panel de administración con dos colecciones:
 ## 🔄 ¿Cuándo Aparecen los Cambios?
 
 Después de publicar:
-1. GitHub procesa el cambio (tarda 1-2 minutos)
-2. GitHub Pages se actualiza (tarda 2-5 minutos)
+1. GitHub procesa el cambio (1-2 minutos)
+2. GitHub Pages/Netlify se actualiza (2-5 minutos)
 3. **Total: 3-7 minutos** aproximadamente
 
 💡 **Tip**: Refresca la página con `Ctrl + F5` (Windows) o `Cmd + Shift + R` (Mac) para ver los cambios.
@@ -67,15 +84,20 @@ Después de publicar:
 
 ## 🆘 Solución Rápida de Problemas
 
-### ❓ No puedo ver el botón "Login with GitHub"
+### ❓ Error "Site not found" al hacer login
+- **Causa**: OAuth no está configurado correctamente
+- **Solución**: Sigue la guía [CONFIGURAR-OAUTH-GITHUB.md](CONFIGURAR-OAUTH-GITHUB.md)
+- **Opción fácil**: Usa Netlify Identity
+
+### ❓ No puedo ver el botón de login
 - Verifica que estés en la URL correcta: `/admin` al final
 - Limpia la caché del navegador
 - Prueba en modo incógnito
 
 ### ❓ Error de autenticación
-- Asegúrate de tener una cuenta de GitHub
-- Verifica que estés logueado en GitHub
-- Autoriza la aplicación cuando GitHub te lo pida
+- Verifica que OAuth esté configurado
+- Asegúrate de estar logueado en GitHub
+- Con Netlify: verifica tu email y contraseña
 
 ### ❓ No veo mis cambios en el sitio
 - Espera 5-7 minutos después de publicar
@@ -86,19 +108,19 @@ Después de publicar:
 
 ## 📚 Documentación Completa
 
-Para más detalles consulta:
+- **[CONFIGURAR-OAUTH-GITHUB.md](CONFIGURAR-OAUTH-GITHUB.md)** - ⚡ EMPIEZA AQUÍ
 - **[DECAP-CMS-GUIA.md](DECAP-CMS-GUIA.md)** - Guía completa de uso
 - **[DECAP-CMS-SETUP.md](DECAP-CMS-SETUP.md)** - Guía técnica
 
 ---
 
-## 🎯 Resumen
+## 🎯 Checklist
 
-1. ✅ URL: https://fjsantel.github.io/ACM-CONECTA-web/admin
-2. ✅ Login con GitHub (primera vez)
-3. ✅ Crear historia tipo Entrevista o Reportaje
-4. ✅ Save → Ready → Publish
-5. ✅ Esperar 5-7 minutos
-6. ✅ Ver en el sitio web
+1. ⬜ Configurar OAuth (ver CONFIGURAR-OAUTH-GITHUB.md)
+2. ⬜ Acceder a /admin
+3. ⬜ Hacer login exitosamente
+4. ⬜ Crear historia de prueba
+5. ⬜ Publicar y esperar 5-7 minutos
+6. ⬜ Ver historia en el sitio web
 
-**¡Ya puedes gestionar todas tus historias sin tocar código!** 🎉
+**¡Cuando completes todos los pasos, el CMS está listo!** 🎉

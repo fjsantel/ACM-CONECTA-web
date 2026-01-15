@@ -2,11 +2,13 @@ backend:
   name: github
   repo: fjsantel/ACM-CONECTA-web
   branch: main
-  base_url: https://decap-oauth-gateway.netlify.app
 
 # Configuración de medios
 media_folder: "fotos"
 public_folder: "fotos"
+
+# Workflow editorial para GitHub Pages
+publish_mode: editorial_workflow
 
 # Configuración local para desarrollo (descomenta para usar localmente)
 # local_backend: true
