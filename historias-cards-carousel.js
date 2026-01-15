@@ -62,8 +62,14 @@ class StoriesCarousel {
 
     render() {
         // Generar las cards
-        const cardsHTML = this.stories.map((story, index) => `
-            <a href="historia-template.html?historia=${story.slug}"
+        const cardsHTML = this.stories.map((story, index) => {
+            // Determinar el template correcto
+            const templateUrl = story.template === 'reportaje'
+                ? 'reportaje-template.html'
+                : 'historia-template.html';
+
+            return `
+            <a href="${templateUrl}?historia=${story.slug}"
                class="story-card ${index === 0 ? 'active' : ''}"
                data-index="${index}"
                role="link"
@@ -84,7 +90,8 @@ class StoriesCarousel {
                     </div>
                 </div>
             </a>
-        `).join('');
+        `;
+        }).join('');
 
         // Generar los indicadores
         const indicatorsHTML = this.stories.map((_, index) => `
@@ -297,6 +304,8 @@ class StoriesCarousel {
 }
 
 // Inicializar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-    new StoriesCarousel(storiesData);
+document.addEventListener('DOMContentLoaded', async () => {
+    // Cargar historias desde el loader unificado
+    const allStories = await loadStoryData();
+    new StoriesCarousel(allStories);
 });

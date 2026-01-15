@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Reportaje | ACM Conecta</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0a1a1a;
+            --bg-secondary: #0f2424;
+            --bg-card: #132b2b;
+            --accent-primary: #00d4aa;
+            --accent-secondary: #57c5b6;
+            --accent-warm: #e8c547;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(255, 255, 255, 0.1);
+
+            --font-display: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-serif: 'Merriweather', Georgia, serif;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: 0.2s var(--ease-out-expo);
+            --transition-medium: 0.4s var(--ease-out-expo);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            background: rgba(10, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all var(--transition-fast);
+        }
+
+        .back-button:hover {
+            color: var(--accent-primary);
+            transform: translateX(-4px);
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-family: var(--font-display);
+            font-weight: 600;
+        }
+
+        /* Hero - Magazine Cover Style */
+        .hero-reportaje {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            margin-top: 80px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-image {
+            position: absolute;
+            inset: 0;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            filter: brightness(0.7);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(10, 26, 26, 0.5) 0%, rgba(10, 26, 26, 0.8) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .hero-category {
+            display: inline-block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 1.5rem;
+            border: 1px solid var(--accent-primary);
+            border-radius: 100px;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-serif);
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-meta-item svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Article Content - Magazine Layout */
+        .article-wrapper {
+            background: var(--bg-primary);
+        }
+
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        /* Typography for article body */
+        .article-body {
+            font-family: var(--font-serif);
+            font-size: 1.2rem;
+            line-height: 1.9;
+            color: var(--text-secondary);
+        }
+
+        .article-body h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .article-body h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-body p:first-of-type::first-letter {
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1;
+            float: left;
+            margin-right: 0.5rem;
+            margin-top: 0.1rem;
+            color: var(--accent-primary);
+            font-family: var(--font-display);
+        }
+
+        .article-body blockquote {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin: 3rem 0;
+            padding-left: 2rem;
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        .article-body ul,
+        .article-body ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.75rem;
+        }
+
+        /* Featured Quote - Pull Quote Style */
+        .pullquote {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent-primary);
+            padding: 3rem;
+            margin: 4rem -2rem;
+            position: relative;
+        }
+
+        .pullquote-text {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-style: italic;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+
+        /* Image Gallery - Full Bleed */
+        .image-feature {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            margin-top: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .image-feature img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .image-caption {
+            max-width: 800px;
+            margin: 1rem auto;
+            padding: 0 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Author Info */
+        .author-section {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .author-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .author-name {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .author-date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Navigation */
+        .story-navigation {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .nav-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-decoration: none;
+            transition: all var(--transition-medium);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+        }
+
+        .nav-card.prev {
+            flex-direction: row;
+        }
+
+        .nav-card.next {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .nav-arrow {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .nav-arrow svg {
+            width: 20px;
+            height: 20px;
+            color: var(--bg-primary);
+        }
+
+        .nav-content {
+            flex: 1;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-name {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 1.5rem;
+            }
+
+            .hero-reportaje {
+                margin-top: 70px;
+                min-height: 600px;
+            }
+
+            .hero-content {
+                padding: 1.5rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+            }
+
+            .article-content {
+                padding: 3rem 1.5rem;
+            }
+
+            .article-body {
+                font-size: 1.1rem;
+            }
+
+            .article-body h2 {
+                font-size: 2rem;
+            }
+
+            .article-body h3 {
+                font-size: 1.5rem;
+            }
+
+            .pullquote {
+                margin-left: 0;
+                margin-right: 0;
+                padding: 2rem 1.5rem;
+            }
+
+            .pullquote-text {
+                font-size: 1.5rem;
+            }
+
+            .image-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .story-navigation {
+                grid-template-columns: 1fr;
+                padding: 0 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="index.html#historias" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Volver a Historias
+            </a>
+            <a href="index.html" class="logo">ACM Conecta</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-reportaje">
+        <img id="hero-image" class="hero-image" src="" alt="">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-category">Reportaje</div>
+            <h1 class="hero-title" id="hero-title"></h1>
+            <p class="hero-subtitle" id="hero-subtitle"></p>
+            <div class="hero-meta">
+                <div class="hero-meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span id="meta-location"></span>
+                </div>
+                <div class="hero-meta-item" id="meta-author-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    <span id="meta-author"></span>
+                </div>
+                <div class="hero-meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span id="meta-date"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <div class="article-wrapper">
+        <article class="article-content">
+            <div class="article-body" id="article-body"></div>
+        </article>
+
+        <!-- Images Gallery -->
+        <div id="images-container"></div>
+
+        <!-- Pull Quote -->
+        <div class="pullquote" id="pullquote-section" style="display: none;">
+            <blockquote class="pullquote-text" id="pullquote-text"></blockquote>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="story-navigation" id="story-navigation"></nav>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Asociación Canal Maule. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Load story data -->
+    <script src="historias-loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        // Get story slug from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const storySlug = urlParams.get('historia');
+
+        // Load and render story
+        loadStoryData().then(allStories => {
+            const storyData = allStories.find(s => s.slug === storySlug && s.template === 'reportaje');
+
+            if (!storyData) {
+                window.location.href = 'index.html#historias';
+            } else {
+                // Populate page
+                document.getElementById('page-title').textContent = `${storyData.name} | ACM Conecta`;
+                document.getElementById('hero-image').src = storyData.image;
+                document.getElementById('hero-image').alt = storyData.name;
+                document.getElementById('hero-title').textContent = storyData.name;
+                document.getElementById('hero-subtitle').textContent = storyData.subtitle || storyData.description;
+                document.getElementById('meta-location').textContent = storyData.location;
+
+                // Author (hide if not present)
+                if (storyData.author) {
+                    document.getElementById('meta-author').textContent = storyData.author;
+                } else {
+                    document.getElementById('meta-author-container').style.display = 'none';
+                }
+
+                // Date
+                if (storyData.date) {
+                    const date = new Date(storyData.date);
+                    document.getElementById('meta-date').textContent = date.toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                }
+
+                // Article body (markdown to HTML)
+                const articleBody = document.getElementById('article-body');
+                if (typeof marked !== 'undefined') {
+                    articleBody.innerHTML = marked.parse(storyData.content);
+                } else {
+                    // Fallback if marked.js doesn't load
+                    articleBody.innerHTML = storyData.content.replace(/\n/g, '<br>');
+                }
+
+                // Images
+                if (storyData.articleImages && storyData.articleImages.length > 0) {
+                    const imagesContainer = document.getElementById('images-container');
+                    storyData.articleImages.forEach((imgData, index) => {
+                        const imageFeature = document.createElement('div');
+                        imageFeature.className = 'image-feature';
+                        imageFeature.innerHTML = `
+                            <img src="${imgData.image}" alt="${imgData.caption || storyData.name}">
+                            ${imgData.caption ? `<p class="image-caption">${imgData.caption}</p>` : ''}
+                        `;
+                        imagesContainer.appendChild(imageFeature);
+                    });
+                }
+
+                // Pull quote
+                if (storyData.quote) {
+                    document.getElementById('pullquote-section').style.display = 'block';
+                    document.getElementById('pullquote-text').textContent = storyData.quote;
+                }
+
+                // Navigation (only reportajes)
+                const reportajes = allStories.filter(s => s.template === 'reportaje');
+                const currentIndex = reportajes.findIndex(s => s.slug === storySlug);
+
+                if (reportajes.length > 1) {
+                    const prevIndex = currentIndex > 0 ? currentIndex - 1 : reportajes.length - 1;
+                    const nextIndex = currentIndex < reportajes.length - 1 ? currentIndex + 1 : 0;
+
+                    const navigationContainer = document.getElementById('story-navigation');
+                    navigationContainer.innerHTML = `
+                        <a href="reportaje-template.html?historia=${reportajes[prevIndex].slug}" class="nav-card prev">
+                            <div class="nav-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </div>
+                            <div class="nav-content">
+                                <div class="nav-label">Reportaje Anterior</div>
+                                <div class="nav-name">${reportajes[prevIndex].name}</div>
+                            </div>
+                        </a>
+                        <a href="reportaje-template.html?historia=${reportajes[nextIndex].slug}" class="nav-card next">
+                            <div class="nav-content">
+                                <div class="nav-label">Siguiente Reportaje</div>
+                                <div class="nav-name">${reportajes[nextIndex].name}</div>
+                            </div>
+                            <div class="nav-arrow">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </div>
+                        </a>
+                    `;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
