@@ -29,3 +29,13 @@
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Node.js
+node_modules/
+*.log
+.env
+.env.local
+
+# Tina CMS
+tina/__generated__/
+.tina-lock
