@@ -631,13 +631,16 @@
 
     <!-- Load story data -->
     <script src="historias-cards-data.js"></script>
+    <script src="historias-loader.js"></script>
     <script>
         // Get story slug from URL
         const urlParams = new URLSearchParams(window.location.search);
         const storySlug = urlParams.get('historia');
 
-        // Find story data
-        const storyData = storiesData.find(s => s.slug === storySlug);
+        // Load story data asynchronously
+        (async () => {
+            const allStories = await loadStoryData();
+            const storyData = allStories.find(s => s.slug === storySlug);
 
         if (!storyData) {
             window.location.href = 'index.html#historias';
@@ -686,13 +689,13 @@
             });
 
             // Navigation
-            const currentIndex = storiesData.findIndex(s => s.slug === storySlug);
-            const prevIndex = currentIndex > 0 ? currentIndex - 1 : storiesData.length - 1;
-            const nextIndex = currentIndex < storiesData.length - 1 ? currentIndex + 1 : 0;
+            const currentIndex = allStories.findIndex(s => s.slug === storySlug);
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : allStories.length - 1;
+            const nextIndex = currentIndex < allStories.length - 1 ? currentIndex + 1 : 0;
 
             const navigationContainer = document.getElementById('story-navigation');
             navigationContainer.innerHTML = `
-                <a href="historia-template.html?historia=${storiesData[prevIndex].slug}" class="nav-card prev">
+                <a href="historia-template.html?historia=${allStories[prevIndex].slug}" class="nav-card prev">
                     <div class="nav-arrow">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -700,13 +703,13 @@
                     </div>
                     <div class="nav-content">
                         <div class="nav-label">Historia Anterior</div>
-                        <div class="nav-name">${storiesData[prevIndex].name}</div>
+                        <div class="nav-name">${allStories[prevIndex].name}</div>
                     </div>
                 </a>
-                <a href="historia-template.html?historia=${storiesData[nextIndex].slug}" class="nav-card next">
+                <a href="historia-template.html?historia=${allStories[nextIndex].slug}" class="nav-card next">
                     <div class="nav-content">
                         <div class="nav-label">Historia Siguiente</div>
-                        <div class="nav-name">${storiesData[nextIndex].name}</div>
+                        <div class="nav-name">${allStories[nextIndex].name}</div>
                     </div>
                     <div class="nav-arrow">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -716,6 +719,7 @@
                 </a>
             `;
         }
+        })(); // Cierre de función asíncrona
     </script>
 </body>
 </html>
