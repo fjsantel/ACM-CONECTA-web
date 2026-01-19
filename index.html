@@ -595,7 +595,7 @@
 
         .pillars-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
             gap: 1.5rem;
             width: 100%;
             max-width: 100%;
@@ -1679,6 +1679,68 @@
         .stagger-3 { transition-delay: 0.3s; }
         .stagger-4 { transition-delay: 0.4s; }
         .stagger-5 { transition-delay: 0.5s; }
+
+        /* ==================== MOBILE FIXES (FUNCIONALIDAD) ==================== */
+        @media (max-width: 600px) {
+            /* Touch targets mínimos (44x44px estándar iOS/Android) */
+            button,
+            .carousel-control,
+            .carousel-indicator,
+            .nav-link {
+                min-width: 44px;
+                min-height: 44px;
+                padding: 12px;
+            }
+
+            /* Padding horizontal aumentado para mejor usabilidad */
+            section {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            /* Font sizes mínimos para legibilidad */
+            body {
+                font-size: 16px; /* Evita zoom automático en iOS */
+            }
+
+            h1 {
+                font-size: 32px;
+                line-height: 1.2;
+            }
+
+            h2 {
+                font-size: 28px;
+                line-height: 1.3;
+            }
+
+            h3 {
+                font-size: 20px;
+                line-height: 1.3;
+            }
+
+            p, li {
+                font-size: 16px;
+                line-height: 1.6;
+            }
+
+            /* Story cards con altura mínima para touch */
+            .story-card {
+                min-height: 400px;
+            }
+
+            /* Botones con área de touch adecuada */
+            .cta-button,
+            .btn {
+                min-height: 48px;
+                padding: 14px 24px;
+                font-size: 16px;
+            }
+        }
     </style>
 
     <!-- Netlify Identity Widget -->

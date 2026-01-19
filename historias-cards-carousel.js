@@ -199,7 +199,8 @@ class StoriesCarousel {
             const diffY = Math.abs(startY - endY);
 
             // If horizontal movement is greater than vertical, it's a swipe
-            if (diffX > diffY && diffX > 10) {
+            // Aumentado de 10px a 20px para evitar cancelar clicks accidentalmente
+            if (diffX > diffY && diffX > 20) {
                 isSwiping = true;
                 // Prevent card links from activating during swipe
                 e.preventDefault();
@@ -213,7 +214,7 @@ class StoriesCarousel {
             }
 
             const diff = startX - endX;
-            const threshold = 50; // Minimum swipe distance
+            const threshold = 80; // Minimum swipe distance (aumentado de 50px a 80px para mejor detección)
 
             if (Math.abs(diff) > threshold) {
                 e.preventDefault();
