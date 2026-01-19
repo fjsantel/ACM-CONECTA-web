@@ -181,45 +181,65 @@ class StoriesCarousel {
         let startY = 0;
         let endX = 0;
         let endY = 0;
+        let startTime = 0;
         let isSwiping = false;
         const track = this.container.querySelector('.stories-carousel-track');
         const cards = this.container.querySelectorAll('.story-card');
 
+        // Deshabilitar links durante swipe activo
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (isSwiping) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, { capture: true });
+        });
+
         track.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
+            endX = startX;
+            endY = startY;
+            startTime = Date.now();
             isSwiping = false;
         }, { passive: true });
 
         track.addEventListener('touchmove', (e) => {
+            if (!e.touches[0]) return;
+
             endX = e.touches[0].clientX;
             endY = e.touches[0].clientY;
 
             const diffX = Math.abs(startX - endX);
             const diffY = Math.abs(startY - endY);
 
-            // If horizontal movement is greater than vertical, it's a swipe
-            // Aumentado de 10px a 20px para evitar cancelar clicks accidentalmente
-            if (diffX > diffY && diffX > 20) {
-                isSwiping = true;
-                // Prevent card links from activating during swipe
+            // Si hay movimiento horizontal significativo (> 30px), es swipe
+            if (diffX > 30 && diffX > diffY) {
+                if (!isSwiping) {
+                    isSwiping = true;
+                }
+                // Prevenir scroll vertical durante swipe horizontal
                 e.preventDefault();
             }
         }, { passive: false });
 
         track.addEventListener('touchend', (e) => {
-            const diff = Math.abs(startX - endX);
-            const threshold = 80; // Minimum swipe distance (aumentado de 50px a 80px para mejor detección)
+            const diffX = Math.abs(startX - endX);
+            const diffY = Math.abs(startY - endY);
+            const timeElapsed = Date.now() - startTime;
+            const swipeThreshold = 50; // Distancia mínima para swipe
 
-            // Si el movimiento fue menor al threshold, es un TAP, no un SWIPE
-            if (diff < threshold) {
-                // Es un TAP - NO prevenir, dejar que el link funcione
+            // TAP: Movimiento mínimo (<30px) y rápido (<300ms)
+            if (diffX < 30 && timeElapsed < 300) {
                 isSwiping = false;
+                // Dejar que el link del <a> funcione naturalmente
                 return;
             }
 
-            // Es un SWIPE válido
-            if (isSwiping && diff >= threshold) {
+            // SWIPE: Movimiento horizontal significativo
+            if (isSwiping && diffX >= swipeThreshold && diffX > diffY) {
+                // Prevenir que el link se active
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -233,8 +253,11 @@ class StoriesCarousel {
                 }
             }
 
-            isSwiping = false;
-        });
+            // Reset después de un pequeño delay
+            setTimeout(() => {
+                isSwiping = false;
+            }, 100);
+        }, { passive: false });
     }
 
     goToSlide(index) {
