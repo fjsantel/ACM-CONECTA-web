@@ -3,7 +3,7 @@ backend:
   repo: fjsantel/ACM-CONECTA-web
   branch: main
   base_url: https://acmconecta.netlify.app
-  auth_endpoint: /.netlify/functions/oauth
+  auth_endpoint: auth
 
 media_folder: "fotos"
 public_folder: "/fotos"
