@@ -208,17 +208,23 @@ class StoriesCarousel {
         }, { passive: false });
 
         track.addEventListener('touchend', (e) => {
-            if (!isSwiping) {
-                // This is a tap, not a swipe - let the link work
+            const diff = Math.abs(startX - endX);
+            const threshold = 80; // Minimum swipe distance (aumentado de 50px a 80px para mejor detección)
+
+            // Si el movimiento fue menor al threshold, es un TAP, no un SWIPE
+            if (diff < threshold) {
+                // Es un TAP - NO prevenir, dejar que el link funcione
+                isSwiping = false;
                 return;
             }
 
-            const diff = startX - endX;
-            const threshold = 80; // Minimum swipe distance (aumentado de 50px a 80px para mejor detección)
-
-            if (Math.abs(diff) > threshold) {
+            // Es un SWIPE válido
+            if (isSwiping && diff >= threshold) {
                 e.preventDefault();
-                if (diff > 0) {
+                e.stopPropagation();
+
+                const direction = startX - endX;
+                if (direction > 0) {
                     // Swipe left - next
                     this.next();
                 } else {
