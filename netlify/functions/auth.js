@@ -53,11 +53,24 @@ exports.handler = async (event) => {
   <title>Authenticating...</title>
   <script>
     (function() {
-      window.opener.postMessage(
-        'authorization:github:success:${JSON.stringify({ token: access_token, provider: 'github' })}',
-        window.location.origin
-      );
-      window.close();
+      const receiveMessage = function(message) {
+        window.opener.postMessage(
+          'authorization:github:success:' + JSON.stringify({
+            token: "${access_token}",
+            provider: "github"
+          }),
+          message.origin
+        );
+      };
+
+      window.addEventListener("message", receiveMessage, false);
+
+      window.opener.postMessage("authorizing:github", "*");
+
+      setTimeout(function() {
+        receiveMessage({ origin: window.opener.location.origin });
+        window.close();
+      }, 100);
     })();
   </script>
 </head>
