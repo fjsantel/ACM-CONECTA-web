@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+  command = "echo 'No build needed - static site'"
+
+[[redirects]]
+  from = "/.netlify/functions/oauth/*"
+  to = "/.netlify/functions/oauth/:splat"
+  status = 200
+
+[functions]
+  directory = "netlify/functions"

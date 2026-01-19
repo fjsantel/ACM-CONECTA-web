@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/fjsantel/ACM-CONECTA-web/issues"
   },
-  "homepage": "https://acmconecta.netlify.app"
+  "homepage": "https://acmconecta.netlify.app",
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
 }
