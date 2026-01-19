@@ -3,8 +3,13 @@
   command = "npm install"
 
 [[redirects]]
-  from = "/.netlify/functions/auth/*"
-  to = "/.netlify/functions/auth/:splat"
+  from = "/auth"
+  to = "/.netlify/functions/auth"
+  status = 200
+
+[[redirects]]
+  from = "/auth/callback"
+  to = "/.netlify/functions/auth/callback"
   status = 200
 
 [functions]
