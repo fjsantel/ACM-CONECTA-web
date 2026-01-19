@@ -1,12 +1,15 @@
 /**
  * ========================================
- * HISTORIAS LOADER - Sistema Unificado
+ * HISTORIAS LOADER - Sistema Automático
  * ========================================
  *
- * Este loader carga historias desde dos fuentes:
- * 1. Archivos Markdown creados con Decap CMS
- * 2. Datos legacy del archivo historias-cards-data.js
+ * Este loader carga automáticamente todas las historias desde:
+ * 1. Archivos Markdown en content/historias/ (Decap CMS)
+ * 2. Archivos Markdown en content/reportajes/ (Decap CMS)
+ * 3. Datos legacy del archivo historias-cards-data.js (fallback)
  */
+
+const GITHUB_API = 'https://api.github.com/repos/fjsantel/ACM-CONECTA-web/contents';
 
 // Función para parsear Front Matter de archivos Markdown
 function parseFrontMatter(markdown) {
@@ -26,8 +29,6 @@ function parseFrontMatter(markdown) {
 
     let currentKey = null;
     let currentList = null;
-    let inMultiline = false;
-    let multilineContent = '';
 
     lines.forEach(line => {
         // Handle list items
@@ -73,117 +74,143 @@ function parseFrontMatter(markdown) {
     return { frontMatter, content };
 }
 
-// Función para cargar archivos Markdown
-async function loadMarkdownStories() {
-    const stories = [];
-
+// Función para obtener lista de archivos de una carpeta en GitHub
+async function getGitHubFiles(folder) {
     try {
-        // Intentar cargar historias de entrevista
-        const interviewFiles = [
-            'maria-gonzalez',
-            'pedro-munoz',
-            'familia-soto',
-            'carlos-rojas'
-        ];
+        const response = await fetch(`${GITHUB_API}/${folder}`);
+        if (!response.ok) return [];
 
-        for (const slug of interviewFiles) {
-            try {
-                const response = await fetch(`content/historias/${slug}.md`);
-                if (response.ok) {
-                    const markdown = await response.text();
-                    const { frontMatter, content } = parseFrontMatter(markdown);
+        const files = await response.json();
 
-                    // Convertir a formato de historia
-                    const story = {
-                        name: frontMatter.name,
-                        slug: frontMatter.slug || slug,
-                        location: frontMatter.location,
-                        age: frontMatter.age ? parseInt(frontMatter.age) : null,
-                        occupation: frontMatter.occupation,
-                        description: frontMatter.description,
-                        image: frontMatter.image,
-                        gradientColors: frontMatter.gradientColors,
-                        template: 'entrevista',
-                        story: {
-                            intro: frontMatter.intro,
-                            interview: frontMatter.interview || [],
-                            quote: frontMatter.quote,
-                            additionalImages: frontMatter.additionalImages || []
-                        }
-                    };
-
-                    stories.push(story);
-                }
-            } catch (err) {
-                console.log(`No se pudo cargar ${slug}.md`);
-            }
-        }
-
-        // Intentar cargar reportajes
-        const reportajeFiles = [
-            'modernizacion-canal-maule-sur'
-        ];
-
-        for (const slug of reportajeFiles) {
-            try {
-                const response = await fetch(`content/reportajes/${slug}.md`);
-                if (response.ok) {
-                    const markdown = await response.text();
-                    const { frontMatter, content } = parseFrontMatter(markdown);
-
-                    const story = {
-                        name: frontMatter.name,
-                        slug: frontMatter.slug || slug,
-                        location: frontMatter.location,
-                        subtitle: frontMatter.subtitle,
-                        description: frontMatter.description,
-                        image: frontMatter.image,
-                        gradientColors: frontMatter.gradientColors,
-                        template: 'reportaje',
-                        author: frontMatter.author,
-                        date: frontMatter.date,
-                        content: content,
-                        articleImages: frontMatter.articleImages || [],
-                        quote: frontMatter.quote
-                    };
-
-                    stories.push(story);
-                }
-            } catch (err) {
-                console.log(`No se pudo cargar reportaje ${slug}.md`);
-            }
-        }
+        // Filtrar solo archivos .md (excluir .gitkeep, etc)
+        return files
+            .filter(file => file.name.endsWith('.md') && !file.name.startsWith('.'))
+            .map(file => file.name.replace('.md', ''));
     } catch (error) {
-        console.error('Error cargando historias desde Markdown:', error);
+        console.error(`Error obteniendo archivos de ${folder}:`, error);
+        return [];
     }
-
-    return stories;
 }
 
-// Función principal para cargar todas las historias
-async function loadStoryData() {
-    // Cargar historias desde Markdown (Decap CMS)
-    const markdownStories = await loadMarkdownStories();
+// Función para cargar una historia desde Markdown
+async function loadHistoriaFromMarkdown(slug) {
+    try {
+        const response = await fetch(`content/historias/${slug}.md`);
+        if (!response.ok) return null;
 
-    // Cargar historias legacy desde JS (si existe)
-    let legacyStories = [];
-    if (typeof storiesData !== 'undefined') {
-        legacyStories = storiesData.map(story => ({
+        const markdown = await response.text();
+        const { frontMatter, content } = parseFrontMatter(markdown);
+
+        // Convertir a formato de historia (entrevista)
+        return {
+            name: frontMatter.nombre,
+            slug: frontMatter.slug || slug,
+            location: frontMatter.ubicacion,
+            age: frontMatter.edad ? parseInt(frontMatter.edad) : null,
+            occupation: frontMatter.ocupacion,
+            description: frontMatter.descripcion,
+            image: frontMatter.foto,
+            gradientColors: getGradientColors(frontMatter.color),
+            template: 'entrevista',
+            story: {
+                intro: frontMatter.intro,
+                interview: frontMatter.preguntas || [],
+                quote: frontMatter.quote,
+                additionalImages: frontMatter.galeria || []
+            }
+        };
+    } catch (error) {
+        console.error(`Error cargando historia ${slug}:`, error);
+        return null;
+    }
+}
+
+// Función para cargar un reportaje desde Markdown
+async function loadReportajeFromMarkdown(slug) {
+    try {
+        const response = await fetch(`content/reportajes/${slug}.md`);
+        if (!response.ok) return null;
+
+        const markdown = await response.text();
+        const { frontMatter, content } = parseFrontMatter(markdown);
+
+        // Convertir a formato de historia (reportaje)
+        return {
+            name: frontMatter.titulo,
+            slug: frontMatter.slug || slug,
+            location: null, // Los reportajes no tienen ubicación
+            subtitle: frontMatter.subtitulo,
+            description: frontMatter.descripcion,
+            image: frontMatter.foto,
+            gradientColors: getGradientColors(frontMatter.color),
+            template: 'reportaje',
+            author: frontMatter.autor,
+            date: frontMatter.fecha,
+            content: content,
+            articleImages: frontMatter.galeria || [],
+            quote: frontMatter.quote
+        };
+    } catch (error) {
+        console.error(`Error cargando reportaje ${slug}:`, error);
+        return null;
+    }
+}
+
+// Función helper para obtener colores de gradiente
+function getGradientColors(color) {
+    const gradients = {
+        blue: ['#1e40af', '#3b82f6'],
+        green: ['#059669', '#10b981'],
+        orange: ['#ea580c', '#f97316'],
+        purple: ['#7c3aed', '#a855f7'],
+        red: ['#dc2626', '#ef4444']
+    };
+    return gradients[color] || gradients.blue;
+}
+
+// Función principal para cargar todas las historias automáticamente
+async function loadStoryData() {
+    const allStories = [];
+
+    try {
+        // 1. Obtener lista de archivos desde GitHub API
+        console.log('🔍 Obteniendo lista de historias desde GitHub...');
+        const [historiaSlugs, reportajeSlugs] = await Promise.all([
+            getGitHubFiles('content/historias'),
+            getGitHubFiles('content/reportajes')
+        ]);
+
+        console.log(`📚 Encontradas ${historiaSlugs.length} historias y ${reportajeSlugs.length} reportajes`);
+
+        // 2. Cargar todas las historias
+        const historiaPromises = historiaSlugs.map(slug => loadHistoriaFromMarkdown(slug));
+        const historias = await Promise.all(historiaPromises);
+
+        // 3. Cargar todos los reportajes
+        const reportajePromises = reportajeSlugs.map(slug => loadReportajeFromMarkdown(slug));
+        const reportajes = await Promise.all(reportajePromises);
+
+        // 4. Combinar y filtrar nulos
+        allStories.push(...historias.filter(h => h !== null));
+        allStories.push(...reportajes.filter(r => r !== null));
+
+        console.log(`✅ Cargadas ${allStories.length} historias/reportajes desde Markdown`);
+
+    } catch (error) {
+        console.error('❌ Error cargando historias desde GitHub API:', error);
+    }
+
+    // 5. Cargar historias legacy desde JS (si existe) como fallback
+    if (typeof storiesData !== 'undefined' && allStories.length === 0) {
+        console.log('ℹ️ Usando datos legacy como fallback');
+        const legacyStories = storiesData.map(story => ({
             ...story,
             template: story.template || 'entrevista'
         }));
+        allStories.push(...legacyStories);
     }
 
-    // Combinar ambas fuentes (Markdown tiene prioridad)
-    const allStories = [...markdownStories];
-
-    // Agregar historias legacy que no estén en Markdown
-    legacyStories.forEach(legacyStory => {
-        if (!allStories.find(s => s.slug === legacyStory.slug)) {
-            allStories.push(legacyStory);
-        }
-    });
-
+    console.log(`🎉 Total de historias cargadas: ${allStories.length}`);
     return allStories;
 }
 
