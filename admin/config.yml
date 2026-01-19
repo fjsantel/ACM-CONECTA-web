@@ -1,0 +1,53 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Para pruebas locales (comentar en producción)
+# local_backend: true
+
+media_folder: "fotos"
+public_folder: "/fotos"
+
+collections:
+  - name: "historias"
+    label: "Historias - Entrevista"
+    folder: "content/historias"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nombre", name: "nombre", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string", hint: "URL amigable (ej: juan-perez)"}
+      - {label: "Ubicación", name: "ubicacion", widget: "string"}
+      - {label: "Ocupación", name: "ocupacion", widget: "string"}
+      - {label: "Descripción corta", name: "descripcion", widget: "text"}
+      - {label: "Foto principal", name: "foto", widget: "image"}
+      - {label: "Color del gradiente", name: "color", widget: "select", options: ["blue", "green", "orange", "purple", "red"]}
+      - {label: "Intro", name: "intro", widget: "markdown"}
+      - label: "Preguntas y Respuestas"
+        name: "preguntas"
+        widget: "list"
+        fields:
+          - {label: "Pregunta", name: "pregunta", widget: "string"}
+          - {label: "Respuesta", name: "respuesta", widget: "markdown"}
+      - {label: "Quote destacado", name: "quote", widget: "text"}
+      - label: "Galería de fotos"
+        name: "galeria"
+        widget: "list"
+        field: {label: "Foto", name: "foto", widget: "image"}
+
+  - name: "reportajes"
+    label: "Reportajes - Extensos"
+    folder: "content/reportajes"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Título", name: "titulo", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string", hint: "URL amigable (ej: proyecto-canal-norte)"}
+      - {label: "Descripción corta", name: "descripcion", widget: "text"}
+      - {label: "Foto principal", name: "foto", widget: "image"}
+      - {label: "Color del gradiente", name: "color", widget: "select", options: ["blue", "green", "orange", "purple", "red"]}
+      - {label: "Contenido", name: "body", widget: "markdown"}
+      - label: "Galería de fotos"
+        name: "galeria"
+        widget: "list"
+        field: {label: "Foto", name: "foto", widget: "image"}

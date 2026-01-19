@@ -1,13 +1,9 @@
 {
   "name": "acm-conecta",
   "version": "1.0.0",
-  "description": "",
-  "main": "historias-cards-carousel.js",
+  "description": "ACM Conecta - Sitio web con Decap CMS",
   "scripts": {
-    "dev": "tinacms dev -c \"npx http-server -p 8080\"",
-    "build": "tinacms build && echo 'Build completo'",
-    "serve": "npx http-server -p 8080",
-    "prebuild": "echo 'Iniciando build de Tina CMS...'"
+    "serve": "npx http-server -p 8080"
   },
   "repository": {
     "type": "git",
@@ -19,9 +15,5 @@
   "bugs": {
     "url": "https://github.com/fjsantel/ACM-CONECTA-web/issues"
   },
-  "homepage": "https://github.com/fjsantel/ACM-CONECTA-web#readme",
-  "devDependencies": {
-    "@tinacms/cli": "^2.1.1",
-    "tinacms": "^3.3.1"
-  }
+  "homepage": "https://acmconecta.netlify.app"
 }
