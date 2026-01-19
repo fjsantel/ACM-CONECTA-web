@@ -176,7 +176,7 @@ Decap CMS necesita hacer commits a GitHub en nombre del usuario. Para esto neces
 ```
 Application name: ACM Conecta CMS
 Client ID: Ov23ctgqSy6PKYQZik6D
-Client Secret: 5c26a886c9e24f715b091374cffd04abf24acf90
+Client Secret: [GUARDADO EN VARIABLES DE ENTORNO DE NETLIFY]
 Homepage URL: https://acmconecta.netlify.app
 Authorization callback URL: https://acmconecta.netlify.app/.netlify/functions/auth/callback
 ```
@@ -318,7 +318,7 @@ exports.handler = async (event) => {
 **Variables configuradas:**
 ```
 GITHUB_CLIENT_ID=Ov23ctgqSy6PKYQZik6D
-GITHUB_CLIENT_SECRET=5c26a886c9e24f715b091374cffd04abf24acf90
+GITHUB_CLIENT_SECRET=[SECRETO - Ver en Netlify]
 ```
 
 **Scopes:** All scopes (Builds + Functions + Runtime + Post processing)
@@ -667,7 +667,7 @@ Este proyecto marca un antes y un después...
 - **Owner:** fjsantel
 - **App name:** ACM Conecta CMS
 - **Client ID:** Ov23ctgqSy6PKYQZik6D
-- **Client Secret:** 5c26a886c9e24f715b091374cffd04abf24acf90
+- **Client Secret:** [Ver en GitHub Settings o Netlify Env Vars]
 - **Manage:** https://github.com/settings/developers
 
 ### Netlify
