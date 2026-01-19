@@ -820,6 +820,7 @@
             width: 100%;
             max-width: 100%;
             overflow: hidden;
+            touch-action: pan-y; /* Solo permite scroll vertical de página, no horizontal */
         }
 
         .stories-carousel-track {
@@ -828,6 +829,7 @@
             transition: transform var(--transition-medium);
             will-change: transform;
             max-width: 100%;
+            touch-action: pan-x; /* Permite swipe horizontal del carousel */
         }
 
         /* Story Card */
@@ -842,6 +844,8 @@
             background: var(--bg-card);
             opacity: 0.6;
             transform: scale(0.95);
+            user-select: none; /* Evita selección de texto durante interacción */
+            -webkit-user-select: none;
             transition: all var(--transition-medium);
             text-decoration: none;
             display: block;
