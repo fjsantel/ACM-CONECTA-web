@@ -235,11 +235,13 @@
             z-index: 999;
             padding: 6rem 2rem 2rem;
             opacity: 0;
+            pointer-events: none; /* No intercepta clicks cuando está inactivo */
             transition: opacity var(--transition-medium);
         }
 
         .mobile-menu-overlay.active {
             opacity: 1;
+            pointer-events: auto; /* Solo intercepta clicks cuando está abierto */
         }
 
         .mobile-nav {
