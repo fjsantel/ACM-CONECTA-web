@@ -84,7 +84,7 @@ class StoriesCarousel {
                 </div>
                 <div class="story-overlay">
                     <div class="story-content">
-                        <span class="story-location">${story.location}</span>
+                        ${story.location ? `<span class="story-location">${story.location}</span>` : ''}
                         <h3 class="story-name">${story.name}</h3>
                         <p class="story-description">${story.description}</p>
                     </div>

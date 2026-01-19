@@ -156,14 +156,14 @@ async function loadReportajeFromMarkdown(slug) {
     }
 }
 
-// Función helper para obtener colores de gradiente
+// Función helper para obtener colores de gradiente con transparencias
 function getGradientColors(color) {
     const gradients = {
-        blue: ['#1e40af', '#3b82f6'],
-        green: ['#059669', '#10b981'],
-        orange: ['#ea580c', '#f97316'],
-        purple: ['#7c3aed', '#a855f7'],
-        red: ['#dc2626', '#ef4444']
+        blue: 'rgba(30, 64, 175, 0.7) 0%, rgba(59, 130, 246, 0.8) 100%',
+        green: 'rgba(5, 150, 105, 0.7) 0%, rgba(16, 185, 129, 0.8) 100%',
+        orange: 'rgba(234, 88, 12, 0.7) 0%, rgba(249, 115, 22, 0.8) 100%',
+        purple: 'rgba(124, 58, 237, 0.7) 0%, rgba(168, 85, 247, 0.8) 100%',
+        red: 'rgba(220, 38, 38, 0.7) 0%, rgba(239, 68, 68, 0.8) 100%'
     };
     return gradients[color] || gradients.blue;
 }
