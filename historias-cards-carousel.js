@@ -240,8 +240,18 @@ class StoriesCarousel {
 
             // TAP: Movimiento mínimo (<30px) y rápido (<300ms)
             if (diffX < 30 && timeElapsed < 300) {
+                // Es un TAP - encontrar el link y navegar manualmente
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+
+                const target = e.target.closest('.story-card');
+                if (target && target.href) {
+                    // Forzar navegación inmediata
+                    window.location.href = target.href;
+                }
+
                 isSwiping = false;
-                // Dejar que el link del <a> funcione naturalmente
                 return;
             }
 
@@ -250,6 +260,7 @@ class StoriesCarousel {
                 // Prevenir que el link se active
                 e.preventDefault();
                 e.stopPropagation();
+                e.stopImmediatePropagation();
 
                 const direction = startX - endX;
                 if (direction > 0) {
