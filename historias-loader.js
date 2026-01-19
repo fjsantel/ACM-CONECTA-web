@@ -200,14 +200,20 @@ async function loadStoryData() {
         console.error('❌ Error cargando historias desde GitHub API:', error);
     }
 
-    // 5. Cargar historias legacy desde JS (si existe) como fallback
-    if (typeof storiesData !== 'undefined' && allStories.length === 0) {
-        console.log('ℹ️ Usando datos legacy como fallback');
+    // 5. Cargar historias legacy desde JS y combinar (evitar duplicados)
+    if (typeof storiesData !== 'undefined') {
+        console.log('📂 Combinando con historias legacy...');
         const legacyStories = storiesData.map(story => ({
             ...story,
             template: story.template || 'entrevista'
         }));
-        allStories.push(...legacyStories);
+
+        // Solo agregar historias legacy que no estén ya en allStories
+        legacyStories.forEach(legacyStory => {
+            if (!allStories.find(s => s.slug === legacyStory.slug)) {
+                allStories.push(legacyStory);
+            }
+        });
     }
 
     console.log(`🎉 Total de historias cargadas: ${allStories.length}`);
