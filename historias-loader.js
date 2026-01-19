@@ -121,7 +121,7 @@ async function loadMarkdownStories() {
 
         // Intentar cargar reportajes
         const reportajeFiles = [
-            // Agregar slugs de reportajes aquí cuando se creen
+            'modernizacion-canal-maule-sur'
         ];
 
         for (const slug of reportajeFiles) {
