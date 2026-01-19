@@ -186,12 +186,20 @@ class StoriesCarousel {
         const track = this.container.querySelector('.stories-carousel-track');
         const cards = this.container.querySelectorAll('.story-card');
 
-        // Deshabilitar links durante swipe activo
+        // Forzar navegación en taps válidos, bloquear durante swipe
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
                 if (isSwiping) {
                     e.preventDefault();
                     e.stopPropagation();
+                    return false;
+                }
+                // Si NO es swipe, forzar navegación
+                const href = card.getAttribute('href');
+                if (href && !isSwiping) {
+                    e.preventDefault();
+                    window.location.href = href;
+                    return false;
                 }
             }, { capture: true });
         });
