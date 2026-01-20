@@ -1,4 +1,4 @@
-name: Deploy a GitHub Pages con Tina CMS
+name: Deploy a GitHub Pages (Sitio Estático)
 
 on:
   push:
@@ -23,25 +23,10 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Instalar dependencias
-        run: npm ci
-
-      - name: Build de Tina CMS
-        run: npm run build
-        env:
-          TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
-          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
-
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Subir artefactos
+      - name: Subir artefactos (sitio estático completo)
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
