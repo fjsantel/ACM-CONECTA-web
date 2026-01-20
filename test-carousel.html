@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACM Conecta — Gestión del Agua para el Maule</title>
+    <meta name="description" content="Te informamos, te formamos, te conectamos. Plataforma de conocimiento de la Asociación Canal Maule.">
+    
+    <!-- Fonts - Using PP Neue Montreal style alternatives -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Colors - Dark theme like Humaan */
+            --bg-primary: #0a1a1a;
+            --bg-secondary: #0f2424;
+            --bg-card: #132b2b;
+            --accent-primary: #00d4aa;
+            --accent-secondary: #57c5b6;
+            --accent-warm: #e8c547;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(255, 255, 255, 0.1);
+            
+            /* Typography */
+            --font-display: 'Instrument Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+            
+            /* Transitions */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: 0.2s var(--ease-out-expo);
+            --transition-medium: 0.4s var(--ease-out-expo);
+            --transition-slow: 0.8s var(--ease-out-expo);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::selection {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+
+        /* ==================== HEADER & NAVIGATION ==================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: 100vw;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            z-index: 1001;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        .logo-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-text {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* Navigation Menu - Humaan Style */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 100px;
+            padding: 0.35rem;
+            position: relative;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            display: block;
+            padding: 0.6rem 1.25rem;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 100px;
+            transition: color var(--transition-fast);
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-menu a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-menu a.active {
+            color: var(--bg-primary);
+        }
+
+        /* Active Pill Indicator */
+        .nav-pill {
+            position: absolute;
+            background: var(--accent-primary);
+            border-radius: 100px;
+            transition: all var(--transition-medium);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Hover Pill */
+        .nav-hover-pill {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            transition: all var(--transition-fast);
+            z-index: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .nav-menu:hover .nav-hover-pill {
+            opacity: 1;
+        }
+
+        /* Corner Icon */
+        .corner-icon {
+            position: fixed;
+            top: 1.5rem;
+            right: 3rem;
+            width: 48px;
+            height: 48px;
+            z-index: 1001;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Mobile Menu - ELIMINADO */
+
+        .corner-icon svg {
+            width: 100%;
+            height: 100%;
+            color: var(--accent-primary);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 3rem;
+            padding-top: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            width: 100%;
+            max-width: 100vw;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .hero-video {
+                object-position: center center;
+                min-width: 100%;
+                min-height: 100%;
+            }
+        }
+
+        .hero-video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 26, 26, 0.7) 0%, rgba(10, 26, 26, 0.5) 50%, rgba(10, 26, 26, 0.8) 100%);
+            z-index: 2;
+        }
+
+        .hero-content-text {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 700;
+            line-height: 0.99;
+            letter-spacing: -0.04em;
+            color: var(--text-primary);
+            margin-bottom: var(--space-lg);
+            padding-bottom: 0.1em;
+        }
+
+        .hero h1 .line {
+            display: block;
+            overflow: visible;
+            padding-bottom: 0.05em;
+        }
+
+        .hero h1 .line span {
+            display: block;
+            transform: translateY(100%);
+            animation: revealLine 1s var(--ease-out-expo) forwards;
+        }
+
+        .hero h1 .line:nth-child(1) span { animation-delay: 0.1s; }
+        .hero h1 .line:nth-child(2) span { animation-delay: 0.2s; }
+        .hero h1 .line:nth-child(3) span { animation-delay: 0.3s; }
+
+        @keyframes revealLine {
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent-primary);
+        }
+
+        .hero-tagline {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-style: italic;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: var(--space-lg);
+            opacity: 0;
+            animation: fadeIn 1s var(--ease-out-expo) 0.4s forwards;
+        }
+
+        .hero-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: var(--space-xl);
+            opacity: 0;
+            animation: fadeIn 1s var(--ease-out-expo) 0.6s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .hero-description {
+            max-width: 450px;
+        }
+
+        .hero-description p {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin-bottom: var(--space-md);
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 100px;
+            transition: all var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .hero-cta:hover {
+            background: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 212, 170, 0.2);
+        }
+
+        .hero-cta svg {
+            width: 18px;
+            height: 18px;
+            transition: transform var(--transition-fast);
+        }
+
+        .hero-cta:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* Mobile button improvements */
+        @media (max-width: 768px) {
+            .hero-cta {
+                padding: 1.125rem 2.25rem;
+                font-size: 1rem;
+                min-height: 48px;
+            }
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: var(--space-lg);
+        }
+
+        .stat {
+            text-align: right;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+        }
+
+        .stat-number span {
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Decorative Elements */
+        .hero-decoration {
+            position: absolute;
+            right: -10%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60%;
+            height: 80%;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        .hero-decoration svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ==================== SCROLL INDICATOR ==================== */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0;
+            animation: fadeIn 1s var(--ease-out-expo) 1s forwards;
+        }
+
+        .scroll-line {
+            width: 60px;
+            height: 1px;
+            background: var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30%;
+            height: 100%;
+            background: var(--accent-primary);
+            animation: scrollPulse 2s infinite;
+        }
+
+        @keyframes scrollPulse {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(400%); }
+        }
+
+        /* ==================== SECTIONS COMMON ==================== */
+        section {
+            padding: var(--space-xl) 3rem;
+            width: 100%;
+            max-width: 100vw;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .section-header {
+            margin-bottom: var(--space-xl);
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .section-label::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            max-width: 800px;
+        }
+
+        /* ==================== PILLARS SECTION ==================== */
+        .pillars {
+            background: var(--bg-secondary);
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .pillar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all var(--transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--transition-medium);
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .pillar-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .pillar-number {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--border-color);
+            line-height: 1;
+            margin-bottom: 1rem;
+            transition: color var(--transition-fast);
+        }
+
+        .pillar-card:hover .pillar-number {
+            color: var(--accent-primary);
+        }
+
+        .pillar-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .pillar-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ==================== WEB SERIE SECTION ==================== */
+        .webserie {
+            background: var(--bg-primary);
+        }
+
+        .webserie-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+
+        .webserie-player {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .webserie-player-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .webserie-player-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .webserie-player-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+        }
+
+        .play-button {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            width: 80px;
+            height: 80px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            border: none;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 20px 40px rgba(0, 212, 170, 0.3);
+        }
+
+        .play-button svg {
+            width: 30px;
+            height: 30px;
+            color: var(--bg-primary);
+            margin-left: 4px;
+        }
+
+        .webserie-info h3 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .webserie-info p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .episode-list {
+            list-style: none;
+        }
+
+        .episode-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .episode-item:hover {
+            padding-left: 1rem;
+            border-color: var(--accent-primary);
+        }
+
+        .episode-number {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            min-width: 50px;
+            transition: color var(--transition-fast);
+        }
+
+        .episode-item:hover .episode-number {
+            color: var(--accent-primary);
+        }
+
+        .episode-title {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .episode-duration {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ==================== STORIES SECTION ==================== */
+        .stories {
+            background: var(--bg-secondary);
+        }
+
+        /* Carousel Container */
+        .stories-carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .stories-carousel-wrapper {
+            position: relative;
+            padding: 2rem 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            touch-action: pan-y; /* Solo permite scroll vertical de página, no horizontal */
+        }
+
+        .stories-carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            transition: transform var(--transition-medium);
+            will-change: transform;
+            max-width: 100%;
+            touch-action: pan-x; /* Permite swipe horizontal del carousel */
+        }
+
+        /* Story Card */
+        .story-card {
+            position: relative;
+            min-width: calc(33.333% - 1rem);
+            max-width: calc(33.333% - 1rem);
+            aspect-ratio: 3/4;
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--bg-card);
+            opacity: 0.6;
+            transform: scale(0.95);
+            user-select: none; /* Evita selección de texto durante interacción */
+            -webkit-user-select: none;
+            transition: all var(--transition-medium);
+            text-decoration: none;
+            display: block;
+            flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .story-card.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        /* Ensure cards are tappable on mobile */
+        @media (max-width: 768px) {
+            .story-card {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .story-card-bg {
+            position: absolute;
+            inset: 0;
+            transition: transform var(--transition-slow), filter var(--transition-medium);
+            filter: brightness(1);
+            z-index: 1;
+        }
+
+        .story-card:hover .story-card-bg {
+            transform: scale(1.05);
+            filter: brightness(1.1) !important;
+        }
+
+        .story-card.active .story-card-bg {
+            transform: scale(1);
+            filter: brightness(1);
+        }
+
+        /* Story Gradient Layer */
+        .story-card-gradient {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            transition: opacity var(--transition-medium);
+            pointer-events: none;
+        }
+
+        .story-card:hover .story-card-gradient {
+            opacity: 0.4 !important;
+        }
+
+        .story-card.active .story-card-gradient {
+            opacity: 1;
+        }
+
+        /* Story Overlay - Estructura mejorada */
+        .story-overlay {
+            z-index: 3;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 26, 26, 0.95) 0%, transparent 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            transition: background var(--transition-medium);
+            pointer-events: none;
+        }
+
+        /* Allow clicks through overlay on mobile */
+        @media (max-width: 768px) {
+            .story-overlay,
+            .story-content,
+            .story-card-gradient {
+                pointer-events: none;
+            }
+        }
+
+        .story-card:hover .story-overlay {
+            background: linear-gradient(to top, rgba(10, 26, 26, 0.85) 0%, rgba(10, 26, 26, 0.1) 100%) !important;
+        }
+
+        .story-card.active .story-overlay {
+            background: linear-gradient(to top, rgba(10, 26, 26, 0.95) 0%, transparent 60%);
+        }
+
+        /* Story Content - Orden visual mejorado */
+        .story-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: auto;
+        }
+
+        .story-location {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-primary);
+            font-weight: 600;
+            order: 1;
+        }
+
+        .story-name {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            line-height: 1.2;
+            order: 2;
+        }
+
+        .story-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all var(--transition-medium);
+            order: 3;
+            margin-top: 0.5rem;
+        }
+
+        .story-card:hover .story-description,
+        .story-card.active .story-description {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Carousel Controls */
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            height: 56px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            z-index: 10;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .carousel-control:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-control.prev {
+            left: -28px;
+        }
+
+        .carousel-control.next {
+            right: -28px;
+        }
+
+        .carousel-control svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-primary);
+            transition: color var(--transition-fast);
+        }
+
+        .carousel-control:hover svg {
+            color: var(--bg-primary);
+        }
+
+        /* Carousel Indicators */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .carousel-indicator {
+            width: 40px;
+            height: 4px;
+            background: var(--border-color);
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        /* Increase touch target size on mobile */
+        @media (max-width: 768px) {
+            .carousel-indicator {
+                padding: 0.75rem 0;
+                position: relative;
+            }
+
+            .carousel-indicator::before {
+                content: '';
+                position: absolute;
+                top: -0.5rem;
+                bottom: -0.5rem;
+                left: -0.25rem;
+                right: -0.25rem;
+            }
+        }
+
+        .carousel-indicator:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .carousel-indicator.active {
+            background: var(--accent-primary);
+            width: 60px;
+        }
+
+        /* ==================== RECURSOS SECTION ==================== */
+        .recursos {
+            background: var(--bg-primary);
+        }
+
+        .recursos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .recurso-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all var(--transition-medium);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .recurso-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+        }
+
+        .recurso-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .recurso-icon svg {
+            width: 28px;
+            height: 28px;
+            color: var(--bg-primary);
+        }
+
+        .recurso-card h3 {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .recurso-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .recurso-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: gap var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .recurso-link:hover {
+            gap: 0.75rem;
+        }
+
+        .recurso-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ==================== CTA SECTION ==================== */
+        .cta-section {
+            background: var(--bg-secondary);
+            text-align: center;
+            padding: var(--space-xl) 3rem;
+        }
+
+        .cta-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--bg-primary);
+            padding: var(--space-xl) 3rem var(--space-lg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-top: 1.5rem;
+        }
+
+        .footer-column h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color var(--transition-fast);
+        }
+
+        .footer-column a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-bottom p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-fast);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .social-links a:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .social-links svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-secondary);
+            transition: color var(--transition-fast);
+        }
+
+        .social-links a:hover svg {
+            color: var(--bg-primary);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1200px) {
+            .webserie-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .webserie-player {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .story-card {
+                min-width: calc(50% - 0.75rem);
+                max-width: calc(50% - 0.75rem);
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (max-width: 900px) {
+            header {
+                padding: 1.25rem 2rem;
+            }
+
+            section {
+                padding: var(--space-lg) 2rem;
+            }
+
+            .pillars-grid,
+            .recursos-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 15px;
+            }
+
+            body {
+                overflow-x: hidden;
+            }
+
+            .stories-carousel-container {
+                overflow: hidden;
+                width: 100%;
+            }
+
+            .story-card {
+                min-width: calc(100% - 1rem);
+                max-width: calc(100% - 1rem);
+            }
+
+            .story-name {
+                font-size: 1.5rem;
+            }
+
+            .story-description {
+                font-size: 0.9rem;
+            }
+
+            .carousel-control {
+                width: 44px;
+                height: 44px;
+            }
+
+            .carousel-control.prev {
+                left: 0;
+            }
+
+            .carousel-control.next {
+                right: 0;
+            }
+
+            .carousel-control {
+                width: 48px;
+                height: 48px;
+            }
+
+            .carousel-control svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            header {
+                padding: 1rem 1.5rem;
+                width: 100%;
+                max-width: 100vw;
+            }
+
+            .logo {
+                flex-shrink: 0;
+                max-width: 60%;
+            }
+
+            .logo-text {
+                font-size: 1rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .hero {
+                padding: 0;
+                padding-top: 80px;
+                min-height: 100vh;
+                width: 100%;
+                max-width: 100vw;
+            }
+
+            .hero-content {
+                min-height: calc(100vh - 80px);
+                border-radius: 0;
+            }
+
+            .hero-content-text {
+                padding: 2rem 1.5rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            /* Ajustar tamaño del título hero para mobile */
+            .hero h1 {
+                font-size: clamp(2.5rem, 10vw, 5rem);
+                line-height: 1.05;
+                margin-bottom: 1.5rem;
+                word-break: break-word;
+            }
+
+            .hero-tagline {
+                font-size: clamp(1.2rem, 4vw, 1.8rem);
+                margin-bottom: 2rem;
+            }
+
+            .hero-description p {
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+
+            .hero-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2rem;
+                margin-top: 2rem;
+            }
+
+            .hero-stats {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                width: 100%;
+            }
+
+            .stat {
+                text-align: left;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+                line-height: 1.1;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+                margin-top: 0.25rem;
+            }
+
+            section {
+                padding: var(--space-lg) 1.5rem;
+                width: 100%;
+                max-width: 100vw;
+            }
+
+            .pillars-grid,
+            .recursos-grid {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+
+            /* Web Serie Section - Mobile Fixes */
+            .webserie-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .webserie-player {
+                aspect-ratio: 16/9;
+                min-height: 250px;
+                width: 100%;
+                margin: 0 auto;
+                border-radius: 16px;
+            }
+
+            .webserie-player-content {
+                padding: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+
+            .webserie-player-title {
+                font-size: 1.3rem;
+                margin-bottom: 0.5rem;
+                line-height: 1.2;
+            }
+
+            .webserie-player-subtitle {
+                font-size: 0.7rem;
+                letter-spacing: 0.12em;
+            }
+
+            .play-button {
+                width: 56px;
+                height: 56px;
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .play-button svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            /* Make sure touch events work on story cards */
+            .story-card {
+                min-height: 400px;
+            }
+
+            .webserie-info h3 {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .webserie-info p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .episode-item {
+                padding: 1rem 0;
+                gap: 1rem;
+            }
+
+            .episode-number {
+                font-size: 1.2rem;
+                min-width: 40px;
+            }
+
+            .episode-title {
+                font-size: 0.95rem;
+            }
+
+            .episode-duration {
+                font-size: 0.8rem;
+            }
+
+            /* Pillars Section - Mobile */
+            .section-title {
+                font-size: clamp(2rem, 6vw, 3rem);
+            }
+
+            .pillar-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .pillar-number {
+                font-size: 3rem;
+            }
+
+            .pillar-card h3 {
+                font-size: 1.3rem;
+            }
+
+            .pillar-card p {
+                font-size: 0.9rem;
+            }
+
+            /* CTA Section - Mobile */
+            .cta-section h2 {
+                font-size: clamp(2rem, 6vw, 3rem);
+            }
+
+            .cta-section p {
+                font-size: 1rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-lg);
+                width: 100%;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+                width: 100%;
+            }
+
+            .scroll-indicator {
+                left: 1.5rem;
+                bottom: 2rem;
+            }
+
+            .corner-icon {
+                display: none;
+            }
+
+            /* Fix any overflow issues */
+            .hero-description {
+                max-width: 100%;
+            }
+
+            .hero-cta {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 400px) {
+            html {
+                font-size: 14px;
+            }
+
+            header {
+                padding: 1rem;
+            }
+
+            .logo-text {
+                font-size: 0.95rem;
+            }
+
+            section {
+                padding: var(--space-md) 1rem;
+            }
+
+            .hero-content-text {
+                padding: 1.5rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: clamp(2rem, 11vw, 3.5rem);
+            }
+
+            .hero-tagline {
+                font-size: clamp(1rem, 4.5vw, 1.5rem);
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.75rem;
+            }
+
+            .section-title {
+                font-size: clamp(1.75rem, 7vw, 2.5rem);
+            }
+
+            .pillar-card,
+            .recurso-card {
+                padding: 1.5rem;
+            }
+
+            .hero-cta {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+
+        /* ==================== MOBILE FIXES (FUNCIONALIDAD) ==================== */
+        @media (max-width: 600px) {
+            /* Touch targets mínimos (44x44px estándar iOS/Android) */
+            button,
+            .carousel-control,
+            .carousel-indicator,
+            .nav-link {
+                min-width: 44px;
+                min-height: 44px;
+                padding: 12px;
+            }
+
+            /* Padding horizontal aumentado para mejor usabilidad */
+            section {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            /* Font sizes mínimos para legibilidad */
+            body {
+                font-size: 16px; /* Evita zoom automático en iOS */
+            }
+
+            h1 {
+                font-size: 32px;
+                line-height: 1.2;
+            }
+
+            h2 {
+                font-size: 28px;
+                line-height: 1.3;
+            }
+
+            h3 {
+                font-size: 20px;
+                line-height: 1.3;
+            }
+
+            p, li {
+                font-size: 16px;
+                line-height: 1.6;
+            }
+
+            /* Story cards con altura mínima para touch */
+            .story-card {
+                min-height: 400px;
+            }
+
+            /* Botones con área de touch adecuada */
+            .cta-button,
+            .btn {
+                min-height: 48px;
+                padding: 14px 24px;
+                font-size: 16px;
+            }
+        }
+    </style>
+
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="/" class="logo">
+            <div class="logo-icon">
+                <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 2C20 2 6 16 6 24C6 32.8366 12.268 40 20 40C27.732 40 34 32.8366 34 24C34 16 20 2 20 2Z" fill="url(#logoGrad)"/>
+                    <path d="M12 26C12 26 15 22 20 22C25 22 28 26 28 26" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                    <path d="M14 30C14 30 16.5 27 20 27C23.5 27 26 30 26 30" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                    <defs>
+                        <linearGradient id="logoGrad" x1="6" y1="2" x2="34" y2="40">
+                            <stop stop-color="#00d4aa"/>
+                            <stop offset="1" stop-color="#0a1a1a"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <span class="logo-text">ACM Conecta</span>
+        </a>
+
+        <nav>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#inicio" class="active" data-index="0">Inicio</a></li>
+                <li><a href="#pilares" data-index="1">Pilares</a></li>
+                <li><a href="#webserie" data-index="2">Web Serie</a></li>
+                <li><a href="#historias" data-index="3">Historias</a></li>
+                <li><a href="#recursos" data-index="4">Recursos</a></li>
+                <li><a href="#contacto" data-index="5">Contacto</a></li>
+                <div class="nav-pill" id="navPill"></div>
+                <div class="nav-hover-pill" id="navHoverPill"></div>
+            </ul>
+        </nav>
+
+        <div class="corner-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 4L28 16L40 12L32 24L44 28L32 32L40 44L28 36L24 48L20 36L8 44L16 32L4 28L16 24L8 12L20 16L24 4Z" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-decoration">
+            <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="300" cy="300" r="280" stroke="currentColor" stroke-width="1"/>
+                <circle cx="300" cy="300" r="220" stroke="currentColor" stroke-width="1"/>
+                <circle cx="300" cy="300" r="160" stroke="currentColor" stroke-width="1"/>
+                <circle cx="300" cy="300" r="100" stroke="currentColor" stroke-width="1"/>
+            </svg>
+        </div>
+        
+        <div class="hero-content">
+            <video class="hero-video" autoplay muted loop>
+                <source src="videos/mix agua.mp4" type="video/mp4">
+            </video>
+            <div class="hero-video-overlay"></div>
+            <div class="hero-content-text">
+                <h1>
+                    <span class="line"><span>Gestionamos</span></span>
+                    <span class="line"><span>el <em>Agua</em></span></span>
+                    <span class="line"><span>del Maule</span></span>
+                </h1>
+
+                <p class="hero-tagline">Te informamos, te formamos, te conectamos.</p>
+
+                <div class="hero-bottom">
+                    <div class="hero-description">
+                        <p>Más de 100 años de experiencia al servicio de las familias agricultoras de la Región del Maule.</p>
+                        <a href="#webserie" class="hero-cta">
+                            Ver Web Serie
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number">100<span>+</span></div>
+                            <div class="stat-label">Años de historia</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">4,000<span>+</span></div>
+                            <div class="stat-label">Familias</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">60K<span>ha</span></div>
+                            <div class="stat-label">Irrigadas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- Pillars Section -->
+    <section class="pillars" id="pilares">
+        <div class="section-header">
+            <span class="section-label">Nuestros Pilares</span>
+            <h2 class="section-title">Comprometidos con el futuro del agua en Chile</h2>
+        </div>
+        
+        <div class="pillars-grid">
+            <div class="pillar-card fade-in-up">
+                <div class="pillar-number">01</div>
+                <h3>Transparencia</h3>
+                <p>Comunicación abierta de datos, decisiones y procesos. Rendición de cuentas pública y plataforma digital de información en tiempo real.</p>
+            </div>
+            
+            <div class="pillar-card fade-in-up stagger-1">
+                <div class="pillar-number">02</div>
+                <h3>Expertise Centenario</h3>
+                <p>100 años gestionando el recurso más importante de Chile. Liderazgo técnico en gestión de cuencas y casos de éxito documentados.</p>
+            </div>
+            
+            <div class="pillar-card fade-in-up stagger-2">
+                <div class="pillar-number">03</div>
+                <h3>Compromiso Social</h3>
+                <p>Historias reales de agricultores beneficiados. Impacto social medible y defensa de la agricultura familiar en la región.</p>
+            </div>
+            
+            <div class="pillar-card fade-in-up stagger-3">
+                <div class="pillar-number">04</div>
+                <h3>Sostenibilidad</h3>
+                <p>Innovación en uso eficiente del agua, alianzas para tecnificación del riego y adaptación al cambio climático.</p>
+            </div>
+            
+            <div class="pillar-card fade-in-up stagger-4">
+                <div class="pillar-number">05</div>
+                <h3>Liderazgo Sectorial</h3>
+                <p>Participación activa en política pública, presencia en instancias nacionales e internacionales y vocería técnica reconocida.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Web Serie Section -->
+    <section class="webserie" id="webserie">
+        <div class="section-header">
+            <span class="section-label">Documental</span>
+            <h2 class="section-title">Agua que Transforma</h2>
+        </div>
+        
+        <div class="webserie-grid">
+            <div class="webserie-player fade-in-up">
+                <div class="webserie-player-content">
+                    <div class="webserie-player-subtitle">Web Serie Documental</div>
+                    <div class="webserie-player-title">Agua que<br>Transforma</div>
+                </div>
+                <div class="play-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="webserie-info fade-in-up stagger-1">
+                <h3>Del Sueño al Riego</h3>
+                <p>La historia de Juan, un pequeño agricultor de Talca que transformó su parcela gracias a la regularización DGA y los fondos CNR.</p>
+                
+                <ul class="episode-list">
+                    <li class="episode-item">
+                        <span class="episode-number">01</span>
+                        <span class="episode-title">Del Sueño al Riego</span>
+                        <span class="episode-duration">12 min</span>
+                    </li>
+                    <li class="episode-item">
+                        <span class="episode-number">02</span>
+                        <span class="episode-title">Mujer del Agua</span>
+                        <span class="episode-duration">10 min</span>
+                    </li>
+                    <li class="episode-item">
+                        <span class="episode-number">03</span>
+                        <span class="episode-title">La Segunda Cosecha</span>
+                        <span class="episode-duration">11 min</span>
+                    </li>
+                    <li class="episode-item">
+                        <span class="episode-number">04</span>
+                        <span class="episode-title">Juntos por el Agua</span>
+                        <span class="episode-duration">13 min</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stories Section -->
+    <section class="stories" id="historias">
+        <div class="section-header">
+            <span class="section-label">Historias de Valor</span>
+            <h2 class="section-title">Las voces del Maule</h2>
+        </div>
+
+        <!-- El carrusel se generará dinámicamente aquí -->
+        <div class="stories-carousel-container fade-in-up"></div>
+    </section>
+
+    <!-- Recursos Section -->
+    <section class="recursos" id="recursos">
+        <div class="section-header">
+            <span class="section-label">Centro de Recursos</span>
+            <h2 class="section-title">Todo lo que necesitas saber</h2>
+        </div>
+        
+        <div class="recursos-grid">
+            <div class="recurso-card fade-in-up">
+                <div class="recurso-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h3>Regularización DGA</h3>
+                <p>Guía paso a paso para inscribir tus derechos de agua. Requisito obligatorio desde 2023.</p>
+                <a href="#" class="recurso-link">
+                    Descargar guía
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="recurso-card fade-in-up stagger-1">
+                <div class="recurso-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3>Fondos CNR</h3>
+                <p>Aprende a postular a los fondos de la Comisión Nacional de Riego. +$1,120 millones disponibles.</p>
+                <a href="#" class="recurso-link">
+                    Ver convocatorias
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="recurso-card fade-in-up stagger-2">
+                <div class="recurso-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                </div>
+                <h3>Tecnificación de Riego</h3>
+                <p>Tutoriales sobre riego por goteo, aspersión y sistemas inteligentes. Ahorra hasta 30% de agua.</p>
+                <a href="#" class="recurso-link">
+                    Ver tutoriales
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="recurso-card fade-in-up stagger-3">
+                <div class="recurso-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3>Calendario de Riego</h3>
+                <p>Consulta los turnos de riego, restricciones mensuales y la curva de asignación actualizada.</p>
+                <a href="#" class="recurso-link">
+                    Ver calendario
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contacto">
+        <div class="cta-content fade-in-up">
+            <h2>¿Tienes dudas sobre tu situación hídrica?</h2>
+            <p>Nuestro equipo está listo para orientarte en regularización, fondos disponibles y tecnificación de riego.</p>
+            <a href="mailto:contacto@canalmaule.cl" class="hero-cta">
+                Escríbenos
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 2C20 2 6 16 6 24C6 32.8366 12.268 40 20 40C27.732 40 34 32.8366 34 24C34 16 20 2 20 2Z" fill="url(#logoGrad2)"/>
+                            <path d="M12 26C12 26 15 22 20 22C25 22 28 26 28 26" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+                            <defs>
+                                <linearGradient id="logoGrad2" x1="6" y1="2" x2="34" y2="40">
+                                    <stop stop-color="#00d4aa"/>
+                                    <stop offset="1" stop-color="#0a1a1a"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="logo-text">ACM Conecta</span>
+                </a>
+                <p>Información, formación y capacitación en gestión del agua para más de 4,000 familias agricultoras del Maule.</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#pilares">Pilares</a></li>
+                    <li><a href="#webserie">Web Serie</a></li>
+                    <li><a href="#historias">Historias</a></li>
+                    <li><a href="#recursos">Recursos</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Regularización DGA</a></li>
+                    <li><a href="#">Fondos CNR</a></li>
+                    <li><a href="#">Tecnificación</a></li>
+                    <li><a href="#">Calendario</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="mailto:contacto@canalmaule.cl">contacto@canalmaule.cl</a></li>
+                    <li><a href="tel:+56712345678">+56 71 234 5678</a></li>
+                    <li><a href="#">Talca, Región del Maule</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 Asociación Canal Maule. Todos los derechos reservados.</p>
+            
+            <div class="social-links">
+                <a href="#" aria-label="YouTube">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+                    </svg>
+                </a>
+                <a href="#" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation Pill Animation (Humaan style)
+        const navMenu = document.getElementById('navMenu');
+        const navPill = document.getElementById('navPill');
+        const navHoverPill = document.getElementById('navHoverPill');
+        const navLinks = navMenu.querySelectorAll('a');
+
+        // Detectar si es desktop (> 768px)
+        const isDesktop = () => window.innerWidth > 768;
+
+        // Set initial pill position
+        function setActivePill(link) {
+            if (!isDesktop()) return; // Solo en desktop
+
+            const rect = link.getBoundingClientRect();
+            const menuRect = navMenu.getBoundingClientRect();
+
+            navPill.style.width = `${rect.width}px`;
+            navPill.style.height = `${rect.height}px`;
+            navPill.style.left = `${rect.left - menuRect.left}px`;
+            navPill.style.top = `${rect.top - menuRect.top}px`;
+        }
+
+        // Initialize (solo desktop)
+        if (isDesktop()) {
+            const activeLink = navMenu.querySelector('a.active');
+            if (activeLink) {
+                setActivePill(activeLink);
+            }
+        }
+
+        // Hover effect (solo desktop - mouseenter no existe en touch)
+        navLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                if (!isDesktop()) return;
+
+                const rect = link.getBoundingClientRect();
+                const menuRect = navMenu.getBoundingClientRect();
+
+                navHoverPill.style.width = `${rect.width}px`;
+                navHoverPill.style.height = `${rect.height}px`;
+                navHoverPill.style.left = `${rect.left - menuRect.left}px`;
+                navHoverPill.style.top = `${rect.top - menuRect.top}px`;
+            });
+
+            link.addEventListener('click', (e) => {
+                // En mobile, NO prevenir default - dejar que navegue normalmente
+                if (!isDesktop()) {
+                    return; // Dejar comportamiento default de anclas
+                }
+
+                // Solo en desktop: prevenir y hacer smooth scroll
+                e.preventDefault();
+
+                // Update active state
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                setActivePill(link);
+
+                // Smooth scroll
+                const targetId = link.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Recalculate on resize (solo desktop)
+        window.addEventListener('resize', () => {
+            if (!isDesktop()) return;
+
+            const activeLink = navMenu.querySelector('a.active');
+            if (activeLink) {
+                setActivePill(activeLink);
+            }
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Update active nav on scroll (SOLO DESKTOP)
+        const sections = document.querySelectorAll('section[id]');
+
+        window.addEventListener('scroll', () => {
+            if (!isDesktop()) return; // NO ejecutar en mobile
+
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                    setActivePill(link);
+                }
+            });
+        });
+    </script>
+
+    <!-- Historias Cards - Sistema de Carrusel -->
+    <script src="historias-cards-data.js"></script>
+    <script src="historias-loader.js"></script>
+    <script src="historias-cards-carousel.js"></script>
+</body>
+</html><!-- Updated Sun Jan 11 23:15:36 -03 2026 -->
