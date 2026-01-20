@@ -172,48 +172,30 @@ function getGradientColors(color) {
 async function loadStoryData() {
     const allStories = [];
 
-    try {
-        // 1. Obtener lista de archivos desde GitHub API
-        console.log('🔍 Obteniendo lista de historias desde GitHub...');
-        const [historiaSlugs, reportajeSlugs] = await Promise.all([
-            getGitHubFiles('content/historias'),
-            getGitHubFiles('content/reportajes')
-        ]);
-
-        console.log(`📚 Encontradas ${historiaSlugs.length} historias y ${reportajeSlugs.length} reportajes`);
-
-        // 2. Cargar todas las historias
-        const historiaPromises = historiaSlugs.map(slug => loadHistoriaFromMarkdown(slug));
-        const historias = await Promise.all(historiaPromises);
-
-        // 3. Cargar todos los reportajes
-        const reportajePromises = reportajeSlugs.map(slug => loadReportajeFromMarkdown(slug));
-        const reportajes = await Promise.all(reportajePromises);
-
-        // 4. Combinar y filtrar nulos
-        allStories.push(...historias.filter(h => h !== null));
-        allStories.push(...reportajes.filter(r => r !== null));
-
-        console.log(`✅ Cargadas ${allStories.length} historias/reportajes desde Markdown`);
-
-    } catch (error) {
-        console.error('❌ Error cargando historias desde GitHub API:', error);
-    }
-
-    // 5. Cargar historias legacy desde JS y combinar (evitar duplicados)
+    // 1. Primero cargar historias legacy (siempre disponibles)
     if (typeof storiesData !== 'undefined') {
-        console.log('📂 Combinando con historias legacy...');
+        console.log('📂 Cargando historias legacy...');
         const legacyStories = storiesData.map(story => ({
             ...story,
             template: story.template || 'entrevista'
         }));
+        allStories.push(...legacyStories);
+        console.log(`✅ Cargadas ${legacyStories.length} historias legacy`);
+    }
 
-        // Solo agregar historias legacy que no estén ya en allStories
-        legacyStories.forEach(legacyStory => {
-            if (!allStories.find(s => s.slug === legacyStory.slug)) {
-                allStories.push(legacyStory);
+    // 2. Intentar cargar reportaje MD conocido (creado por CMS)
+    try {
+        console.log('📝 Intentando cargar reportaje desde Markdown...');
+        const reportaje = await loadReportajeFromMarkdown('modernizacion-canal-maule-sur');
+        if (reportaje) {
+            // Solo agregar si no existe ya
+            if (!allStories.find(s => s.slug === reportaje.slug)) {
+                allStories.push(reportaje);
+                console.log('✅ Reportaje MD cargado');
             }
-        });
+        }
+    } catch (error) {
+        console.log('ℹ️ Reportaje MD no disponible (normal si no existe)');
     }
 
     console.log(`🎉 Total de historias cargadas: ${allStories.length}`);
