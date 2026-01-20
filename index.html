@@ -2148,44 +2148,59 @@
         const navPill = document.getElementById('navPill');
         const navHoverPill = document.getElementById('navHoverPill');
         const navLinks = navMenu.querySelectorAll('a');
-        
+
+        // Detectar si es desktop (> 768px)
+        const isDesktop = () => window.innerWidth > 768;
+
         // Set initial pill position
         function setActivePill(link) {
+            if (!isDesktop()) return; // Solo en desktop
+
             const rect = link.getBoundingClientRect();
             const menuRect = navMenu.getBoundingClientRect();
-            
+
             navPill.style.width = `${rect.width}px`;
             navPill.style.height = `${rect.height}px`;
             navPill.style.left = `${rect.left - menuRect.left}px`;
             navPill.style.top = `${rect.top - menuRect.top}px`;
         }
-        
-        // Initialize
-        const activeLink = navMenu.querySelector('a.active');
-        if (activeLink) {
-            setActivePill(activeLink);
+
+        // Initialize (solo desktop)
+        if (isDesktop()) {
+            const activeLink = navMenu.querySelector('a.active');
+            if (activeLink) {
+                setActivePill(activeLink);
+            }
         }
-        
-        // Hover effect
+
+        // Hover effect (solo desktop - mouseenter no existe en touch)
         navLinks.forEach(link => {
             link.addEventListener('mouseenter', () => {
+                if (!isDesktop()) return;
+
                 const rect = link.getBoundingClientRect();
                 const menuRect = navMenu.getBoundingClientRect();
-                
+
                 navHoverPill.style.width = `${rect.width}px`;
                 navHoverPill.style.height = `${rect.height}px`;
                 navHoverPill.style.left = `${rect.left - menuRect.left}px`;
                 navHoverPill.style.top = `${rect.top - menuRect.top}px`;
             });
-            
+
             link.addEventListener('click', (e) => {
+                // En mobile, NO prevenir default - dejar que navegue normalmente
+                if (!isDesktop()) {
+                    return; // Dejar comportamiento default de anclas
+                }
+
+                // Solo en desktop: prevenir y hacer smooth scroll
                 e.preventDefault();
-                
+
                 // Update active state
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
                 setActivePill(link);
-                
+
                 // Smooth scroll
                 const targetId = link.getAttribute('href');
                 const target = document.querySelector(targetId);
@@ -2194,21 +2209,23 @@
                 }
             });
         });
-        
-        // Recalculate on resize
+
+        // Recalculate on resize (solo desktop)
         window.addEventListener('resize', () => {
+            if (!isDesktop()) return;
+
             const activeLink = navMenu.querySelector('a.active');
             if (activeLink) {
                 setActivePill(activeLink);
             }
         });
-        
+
         // Scroll animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -2216,26 +2233,28 @@
                 }
             });
         }, observerOptions);
-        
+
         document.querySelectorAll('.fade-in-up').forEach(el => {
             observer.observe(el);
         });
-        
-        // Update active nav on scroll
+
+        // Update active nav on scroll (SOLO DESKTOP)
         const sections = document.querySelectorAll('section[id]');
-        
+
         window.addEventListener('scroll', () => {
+            if (!isDesktop()) return; // NO ejecutar en mobile
+
             let current = '';
-            
+
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
-                
+
                 if (window.scrollY >= sectionTop - 200) {
                     current = section.getAttribute('id');
                 }
             });
-            
+
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 if (link.getAttribute('href') === `#${current}`) {
