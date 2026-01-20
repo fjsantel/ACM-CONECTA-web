@@ -1,26 +1,55 @@
 # Estado Actual del Deploy - ACM Conecta
 
 **Fecha**: 19 de Enero 2026
-**Última actualización**: Commit `3801458`
+**Última actualización**: Commit `80d2248`
 
-## 📊 Estado de Branches
+---
 
-### Branch `main` (Producción Netlify - PAUSADO)
-- **Estado**: ✅ Actualizado y listo
-- **Último commit**: `3801458` - Documentar problema mobile-nav
-- **Deploy**: ⏸️ Netlify pausado hasta **1 de Febrero 2026** (límite de build minutes)
-- **CMS**: ✅ Decap CMS configurado y funcional
-- **Contenido**:
-  - 4 historias legacy (hardcoded en historias-cards-data.js)
+## 🎯 ESTRUCTURA SIMPLIFICADA
+
+### Repositorio Único
+**GitHub**: https://github.com/fjsantel/ACM-CONECTA-web
+
+### 2 Ambientes, 2 Propósitos Claros:
+
+#### 1️⃣ DESARROLLO (Para ti - Francisco)
+- **Branch**: `gh-pages`
+- **Link**: https://fjsantel.github.io/ACM-CONECTA-web/
+- **Propósito**: Desarrollo, testing, preview de cambios
+- **CMS**: ❌ No disponible
+- **Actualización**: Automática al hacer push a `gh-pages`
+- **Costo**: ✅ Gratis (GitHub Pages)
+
+#### 2️⃣ PRODUCCIÓN (Para el cliente)
+- **Branch**: `main`
+- **Link**: https://acmconecta.netlify.app/
+- **Propósito**: Sitio oficial del cliente con CMS
+- **CMS**: ✅ Disponible en /admin/
+- **Estado actual**: ⏸️ Pausado (sin plan pagado)
+- **Reactivación**: Cuando el cliente pague Netlify
+- **Costo**: 💰 Requiere plan Netlify (~$19/mes)
+
+---
+
+## 📊 Estado Técnico de Branches
+
+### Branch `main` (Netlify - Cliente)
+- **Estado**: ✅ Código actualizado y listo
+- **Último commit**: `80d2248`
+- **Deploy Netlify**: ⏸️ Pausado (límite build minutes gratis)
+- **CMS Decap**: ✅ Configurado, listo para activar
+- **Contenido actual**:
+  - 4 historias legacy (en historias-cards-data.js)
   - 1 reportaje MD (modernizacion-canal-maule-sur.md)
   - Total: 5 cards en carousel
 
-### Branch `gh-pages` (GitHub Pages - ACTIVO)
-- **Estado**: ✅ Actualizado y funcionando
-- **Último commit**: `3801458` - Mismo que main
-- **Deploy**: ✅ ACTIVO en https://fjsantel.github.io/ACM-CONECTA-web/
-- **CMS**: ❌ No disponible (solo para testing visual/responsive)
-- **Propósito**: Testing y preview mientras Netlify está pausado
+### Branch `gh-pages` (GitHub Pages - Desarrollo)
+- **Estado**: ✅ Actualizado y sincronizado con main
+- **Último commit**: `80d2248` (mismo que main)
+- **Deploy GitHub Pages**: ✅ ACTIVO
+- **URL principal**: https://fjsantel.github.io/ACM-CONECTA-web/
+- **URL sin caché**: https://fjsantel.github.io/ACM-CONECTA-web/test-carousel.html
+- **Propósito**: Testing visual/responsive mientras trabajas
 
 ## 🔧 Cambios Críticos Implementados
 
@@ -71,20 +100,51 @@
 2. **historias-loader.js** - GitHub API removido, usa solo historias legacy
 3. **historias-cards-carousel.js** - Touch events mejorados, debugging agregado
 
-## 🌐 URLs Disponibles
+## 🔄 WORKFLOW DE DESARROLLO
 
-### Producción (cuando Netlify reactive):
-- **URL**: https://acmconecta.netlify.app/
-- **Estado**: ⏸️ Pausado hasta 1 Feb 2026
-- **CMS**: https://acmconecta.netlify.app/admin/
-- **Branch**: `main`
+### Cuando trabajas (desarrollo diario):
 
-### Testing/Preview (activo ahora):
-- **URL principal**: https://fjsantel.github.io/ACM-CONECTA-web/
-- **URL sin caché**: https://fjsantel.github.io/ACM-CONECTA-web/test-carousel.html
-- **Estado**: ✅ Activo
-- **Branch**: `gh-pages`
-- **Nota**: El archivo `index.html` puede tener caché de GitHub Pages (usar test-carousel.html para pruebas)
+```bash
+# 1. Haces cambios en archivos
+# 2. Commit
+git add .
+git commit -m "Tu mensaje"
+
+# 3. Push a main (actualiza ambos)
+git push origin main
+
+# 4. Merge a gh-pages para ver cambios en tu link
+git checkout gh-pages
+git merge main
+git push origin gh-pages
+git checkout main
+```
+
+### Ver tus cambios:
+- **Inmediato**: https://fjsantel.github.io/ACM-CONECTA-web/
+- **Si hay caché**: https://fjsantel.github.io/ACM-CONECTA-web/test-carousel.html
+
+### Cuando el cliente active Netlify:
+- Los cambios en `main` se deployan automáticamente a https://acmconecta.netlify.app/
+- El cliente puede usar el CMS en /admin/
+
+---
+
+## 🌐 LINKS ÚNICOS DEL PROYECTO
+
+### Para TI (Desarrollo):
+**Link único**: https://fjsantel.github.io/ACM-CONECTA-web/
+- ✅ Gratis
+- ✅ Actualizado con cada push a gh-pages
+- ❌ Sin CMS
+
+### Para el CLIENTE (Producción):
+**Link único**: https://acmconecta.netlify.app/
+- ⏸️ Pausado (requiere pago)
+- ✅ Con CMS en /admin/
+- 💰 ~$19/mes Netlify
+
+**Total**: 2 links, 2 propósitos, 1 repositorio
 
 ## ✅ Funcionalidades Verificadas
 
