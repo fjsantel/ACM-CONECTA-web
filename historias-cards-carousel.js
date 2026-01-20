@@ -239,16 +239,37 @@ class StoriesCarousel {
             const swipeThreshold = 50; // Distancia mínima para swipe
 
             // TAP: Movimiento mínimo (<30px) y rápido (<300ms)
-            if (diffX < 30 && timeElapsed < 300) {
-                // Es un TAP - encontrar el link y navegar manualmente
+            if (diffX < 30 && diffY < 30 && timeElapsed < 300) {
+                // Es un TAP - encontrar la card y navegar
                 e.preventDefault();
                 e.stopPropagation();
                 e.stopImmediatePropagation();
 
-                const target = e.target.closest('.story-card');
+                // Buscar el story-card desde donde se hizo el touch
+                let target = e.target;
+
+                // Si no es directamente el link, buscarlo hacia arriba
+                if (!target.classList.contains('story-card')) {
+                    target = target.closest('.story-card');
+                }
+
+                // Debug temporal
+                console.log('TAP detectado en carousel', {
+                    target: target,
+                    href: target ? target.href : 'no href',
+                    diffX,
+                    diffY,
+                    time: timeElapsed
+                });
+
                 if (target && target.href) {
-                    // Forzar navegación inmediata
-                    window.location.href = target.href;
+                    console.log('→ Navegando a:', target.href);
+                    // Pequeño delay para asegurar que preventDefault toma efecto
+                    setTimeout(() => {
+                        window.location.href = target.href;
+                    }, 50);
+                } else {
+                    console.warn('⚠️ No se encontró href en target');
                 }
 
                 isSwiping = false;
@@ -261,6 +282,8 @@ class StoriesCarousel {
                 e.preventDefault();
                 e.stopPropagation();
                 e.stopImmediatePropagation();
+
+                console.log('SWIPE detectado', { diffX, direction: startX > endX ? 'left' : 'right' });
 
                 const direction = startX - endX;
                 if (direction > 0) {
